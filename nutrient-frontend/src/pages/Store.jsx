@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { FiSearch, FiFilter, FiX, FiSliders } from 'react-icons/fi';
 import ProductCard from '../components/ui/ProductCard';
 import { GENRES } from '../data/mockData';
-import { useproducts } from '../context/productContext';
+import { useproducts } from '../context/ProductContext';
 import './Store.css';
 
 const SORT_OPTIONS = [
