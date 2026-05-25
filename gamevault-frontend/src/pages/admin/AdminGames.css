@@ -1,0 +1,234 @@
+.ag-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.ag-search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.ag-search-icon {
+  position: absolute;
+  left: 11px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.ag-search {
+  width: 100%;
+  padding: 9px 32px 9px 36px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-bright);
+  font-size: 14px;
+}
+
+.ag-search:focus { border-color: var(--accent); }
+
+.ag-search-clear {
+  position: absolute;
+  right: 8px;
+  background: none;
+  color: var(--text-muted);
+  padding: 2px;
+}
+
+.ag-filters { display: flex; gap: 8px; }
+
+.ag-select {
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-bright);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ag-count {
+  font-size: 13px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+/* Table */
+.ag-table-wrap { padding: 0; overflow: hidden; }
+
+.ag-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ag-table thead tr {
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+}
+
+.ag-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.ag-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  vertical-align: middle;
+}
+
+.ag-table tbody tr:hover { background: rgba(77,166,255,0.04); }
+.ag-table tbody tr:last-child td { border-bottom: none; }
+
+.ag-game-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ag-game-cover {
+  width: 48px;
+  height: 34px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 14px;
+  color: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ag-game-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ag-game-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.ag-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-bright);
+}
+
+.ag-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.ag-downloads {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.ag-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.ag-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.ag-btn-view {
+  background: rgba(77,166,255,0.08);
+  border-color: rgba(77,166,255,0.2);
+  color: var(--accent);
+}
+
+.ag-btn-view:hover { background: rgba(77,166,255,0.18); }
+
+.ag-btn-edit {
+  background: rgba(240,169,64,0.08);
+  border-color: rgba(240,169,64,0.2);
+  color: var(--gold);
+}
+
+.ag-btn-edit:hover { background: rgba(240,169,64,0.18); }
+
+.ag-btn-delete {
+  background: rgba(224,85,85,0.08);
+  border-color: rgba(224,85,85,0.2);
+  color: var(--red);
+}
+
+.ag-btn-delete:hover { background: rgba(224,85,85,0.18); }
+
+.ag-empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.text-right { text-align: right; }
+
+@media (max-width: 768px) {
+  .ag-toolbar { flex-direction: column; align-items: stretch; }
+  .ag-filters {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .ag-select {
+    width: 100%;
+  }
+
+  .ag-table-wrap {
+    overflow-x: auto;
+  }
+
+  .ag-table {
+    min-width: 680px;
+  }
+
+  .ag-table th:nth-child(4),
+  .ag-table td:nth-child(4),
+  .ag-table th:nth-child(5),
+  .ag-table td:nth-child(5) { display: none; }
+}
+
+@media (max-width: 420px) {
+  .ag-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .ag-table {
+    min-width: 560px;
+  }
+}

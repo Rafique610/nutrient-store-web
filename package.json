@@ -1,0 +1,15 @@
+{
+  "name": "gamevault",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-all.js",
+    "dev:backend": "npm --prefix gamevault-backend run dev",
+    "dev:frontend": "npm --prefix gamevault-frontend run dev",
+    "seed": "npm --prefix gamevault-backend run seed"
+  },
+  "dependencies": {
+    "mongodb": "^7.2.0"
+  }
+}

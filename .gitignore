@@ -1,0 +1,16 @@
+node_modules/
+**/node_modules/
+.env
+**/.env
+build/
+**/build/
+dist/
+**/dist/
+package-lock.json
+**/package-lock.json
+.vscode/
+**/.vscode/
+.DS_Store
+**/.DS_Store
+GameVault-Presentation-Demo.mp4
+~$GameVault_Slides.pptx
