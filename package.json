@@ -7,7 +7,9 @@
     "dev": "node scripts/dev-all.js",
     "dev:backend": "npm --prefix nutrient-backend run dev",
     "dev:frontend": "npm --prefix nutrient-frontend run dev",
-    "seed": "npm --prefix nutrient-backend run seed"
+    "seed": "npm --prefix nutrient-backend run seed",
+    "build": "npm --prefix nutrient-frontend run build",
+    "start": "npm --prefix nutrient-frontend run start"
   },
   "dependencies": {
     "mongodb": "^7.2.0"
