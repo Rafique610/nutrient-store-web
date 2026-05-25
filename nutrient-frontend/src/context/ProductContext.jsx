@@ -1,4 +1,4 @@
-﻿import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { productsApi } from '../services/api';
 import { mockproducts } from '../data/mockData';
 
@@ -44,17 +44,16 @@ export function ProductProvider({ children }) {
 
   const value = useMemo(() => ({
     products,
-    products: products, // fallback alias
     loading,
     error,
     refreshProducts,
-    refreshproducts: refreshProducts, // fallback alias
+    refreshproducts: refreshProducts,
     addProduct,
-    addproduct: addProduct, // fallback alias
+    addproduct: addProduct,
     updateProduct,
-    updateproduct: updateProduct, // fallback alias
+    updateproduct: updateProduct,
     removeProduct,
-    removeproduct: removeProduct, // fallback alias
+    removeproduct: removeProduct,
   }), [products, loading, error, refreshProducts, addProduct, updateProduct, removeProduct]);
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
@@ -62,6 +61,5 @@ export function ProductProvider({ children }) {
 
 export const useProducts = () => useContext(ProductContext);
 
-// Fallback exports for gradual refactoring
 export { ProductProvider as productProvider, useProducts as useproducts };
 
