@@ -1,0 +1,249 @@
+﻿.profile-page { padding: 28px 32px; }
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
+  align-items: flex-start;
+}
+
+/* Left card */
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 28px 20px;
+  position: sticky;
+  top: calc(var(--navbar-h) + 24px);
+}
+
+.profile-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #040d18;
+  box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.profile-info { width: 100%; }
+
+.profile-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-name-row h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 0;
+}
+
+.profile-edit-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.profile-edit-btn:hover {
+  color: var(--accent);
+  border-color: var(--border-accent);
+}
+
+.profile-edit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.profile-name-input {
+  width: 100%;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.profile-edit-btns { display: flex; gap: 8px; }
+
+.profile-saved {
+  font-size: 13px;
+  color: var(--green);
+  margin: 0 0 8px;
+}
+
+.profile-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+.profile-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+}
+
+.profile-detail-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.detail-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-bright);
+  margin-top: 1px;
+}
+
+/* Right side */
+.profile-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.profile-section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin-bottom: 14px;
+}
+
+.profile-products { display: flex; flex-direction: column; gap: 10px; }
+
+.profile-product-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.profile-product-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.profile-product-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-bright);
+}
+
+.profile-product-genre {
+  flex-shrink: 0;
+}
+
+/* Orders */
+.order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  gap: 12px;
+}
+
+.order-row:last-child { border-bottom: none; }
+
+.order-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 2px;
+}
+
+.order-date { font-size: 12px; }
+
+.order-price {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .profile-page { padding: 16px; }
+  .profile-layout { grid-template-columns: 1fr; }
+  .profile-card { position: static; }
+  .profile-stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .profile-card {
+    padding: 22px 16px;
+  }
+
+  .profile-avatar {
+    width: 68px;
+    height: 68px;
+    color: #fff;
+  }
+
+  .profile-name-row h2 {
+    font-size: 1.15rem;
+  }
+
+  .profile-stats { grid-template-columns: 1fr; }
+
+  .profile-product-row,
+  .order-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .profile-product-genre,
+  .order-price {
+    align-self: flex-start;
+  }
+}
+

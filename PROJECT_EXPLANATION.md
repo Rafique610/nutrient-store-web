@@ -1,17 +1,17 @@
-# GameVault Project Explanation
+﻿# Nutrient Project Explanation
 
 ## 1. Project Overview
 
-GameVault is a full-stack web application for browsing, buying, reviewing, publishing, and managing digital games. It is built as a marketplace-style platform with three user roles:
+Nutrient is a full-stack web application for browsing, buying, reviewing, publishing, and managing digital supplements. It is built as a marketplace-style platform with three user roles:
 
-- `customer`: browses games, adds games to cart, checks out, owns a library, downloads owned games, and reviews owned games.
-- `developer`: has customer-like browsing access plus developer-only game publishing and ownership-based game management.
-- `admin`: manages platform users, games, and dashboard statistics through an admin panel.
+- `customer`: browses supplements, adds supplements to cart, checks out, owns a library, downloads owned supplements, and reviews owned supplements.
+- `developer`: has customer-like browsing access plus developer-only supplement publishing and ownership-based supplement management.
+- `admin`: manages platform users, supplements, and dashboard statistics through an admin panel.
 
 The project is split into two main applications:
 
-- `gamevault-frontend/`: React + Vite frontend.
-- `gamevault-backend/`: Node.js + Express + MongoDB backend.
+- `Nutrient-frontend/`: React + Vite frontend.
+- `Nutrient-backend/`: Node.js + Express + MongoDB backend.
 
 There is also a root-level runner:
 
@@ -36,7 +36,7 @@ Express backend on http://localhost:5000
   |
   | Mongoose ODM
   v
-MongoDB database: gamevault
+MongoDB database: Nutrient
 ```
 
 The frontend never talks directly to MongoDB. It only communicates with the backend API. The backend owns authentication, validation, authorization, database writes, file uploads, and response formatting.
@@ -56,13 +56,13 @@ The frontend uses:
 
 Important frontend files:
 
-- `gamevault-frontend/src/App.jsx`
-- `gamevault-frontend/src/main.jsx`
-- `gamevault-frontend/src/services/api.js`
-- `gamevault-frontend/src/context/AuthContext.jsx`
-- `gamevault-frontend/src/context/GameContext.jsx`
-- `gamevault-frontend/src/pages/*`
-- `gamevault-frontend/src/components/*`
+- `Nutrient-frontend/src/App.jsx`
+- `Nutrient-frontend/src/main.jsx`
+- `Nutrient-frontend/src/services/api.js`
+- `Nutrient-frontend/src/context/AuthContext.jsx`
+- `Nutrient-frontend/src/context/ProductContext.jsx`
+- `Nutrient-frontend/src/pages/*`
+- `Nutrient-frontend/src/components/*`
 
 ### Backend
 
@@ -81,16 +81,16 @@ The backend uses:
 
 Important backend files:
 
-- `gamevault-backend/server.js`
-- `gamevault-backend/config/db.js`
-- `gamevault-backend/models/User.js`
-- `gamevault-backend/models/Game.js`
-- `gamevault-backend/models/Order.js`
-- `gamevault-backend/models/Review.js`
-- `gamevault-backend/controllers/*`
-- `gamevault-backend/routes/*`
-- `gamevault-backend/middleware/*`
-- `gamevault-backend/scripts/seed.js`
+- `Nutrient-backend/server.js`
+- `Nutrient-backend/config/db.js`
+- `Nutrient-backend/models/User.js`
+- `Nutrient-backend/models/supplement.js`
+- `Nutrient-backend/models/Order.js`
+- `Nutrient-backend/models/Review.js`
+- `Nutrient-backend/controllers/*`
+- `Nutrient-backend/routes/*`
+- `Nutrient-backend/middleware/*`
+- `Nutrient-backend/scripts/seed.js`
 
 ## 4. Root Project Runner
 
@@ -100,9 +100,9 @@ The root `package.json` provides commands for working with the full project:
 {
   "scripts": {
     "dev": "node scripts/dev-all.js",
-    "dev:backend": "npm --prefix gamevault-backend run dev",
-    "dev:frontend": "npm --prefix gamevault-frontend run dev",
-    "seed": "npm --prefix gamevault-backend run seed"
+    "dev:backend": "npm --prefix Nutrient-backend run dev",
+    "dev:frontend": "npm --prefix Nutrient-frontend run dev",
+    "seed": "npm --prefix Nutrient-backend run seed"
   }
 }
 ```
@@ -111,8 +111,8 @@ The root `package.json` provides commands for working with the full project:
 
 Runs both applications at once:
 
-- Backend: `gamevault-backend`, using `npm run dev`
-- Frontend: `gamevault-frontend`, using `npm run dev`
+- Backend: `Nutrient-backend`, using `npm run dev`
+- Frontend: `Nutrient-frontend`, using `npm run dev`
 
 The runner is implemented in:
 
@@ -129,20 +129,20 @@ It spawns both child processes, prefixes terminal logs with `[backend]` and `[fr
 Backend environment file:
 
 ```txt
-gamevault-backend/.env
+Nutrient-backend/.env
 ```
 
 Example file:
 
 ```txt
-gamevault-backend/.env.example
+Nutrient-backend/.env.example
 ```
 
 Expected variables:
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/gamevault
+MONGO_URI=mongodb://localhost:27017/Nutrient
 JWT_SECRET=replace_with_a_long_random_secret
 JWT_EXPIRE=1h
 ```
@@ -159,7 +159,7 @@ Meaning:
 Frontend example file:
 
 ```txt
-gamevault-frontend/.env.example
+Nutrient-frontend/.env.example
 ```
 
 Expected variable:
@@ -181,7 +181,7 @@ http://localhost:5000/api
 Frontend rendering begins in:
 
 ```txt
-gamevault-frontend/src/main.jsx
+Nutrient-frontend/src/main.jsx
 ```
 
 It mounts the React app into the DOM:
@@ -199,7 +199,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 Routes are defined in:
 
 ```txt
-gamevault-frontend/src/App.jsx
+Nutrient-frontend/src/App.jsx
 ```
 
 Main routes:
@@ -208,7 +208,7 @@ Main routes:
 |---|---|---|
 | `/` | `Home` | Public, redirects admin to `/admin` |
 | `/store` | `Store` | Public |
-| `/game/:id` | `GameDetail` | Public |
+| `/supplement/:id` | `ProductDetail` | Public |
 | `/login` | `Login` | Public |
 | `/register` | `Register` | Public |
 | `/cart` | `Cart` | Authenticated |
@@ -217,7 +217,7 @@ Main routes:
 | `/profile` | `Profile` | Authenticated |
 | `/developer` | `DeveloperHub` | Developer only |
 | `/admin` | `AdminDashboard` | Admin only |
-| `/admin/games` | `AdminGames` | Admin only |
+| `/admin/supplements` | `Adminsupplements` | Admin only |
 | `/admin/users` | `AdminUsers` | Admin only |
 
 Protected routing is handled by the `ProtectedRoute` component in `App.jsx`. It checks:
@@ -237,9 +237,9 @@ The main layout includes:
 Files:
 
 ```txt
-gamevault-frontend/src/components/layout/Navbar.jsx
-gamevault-frontend/src/components/layout/Sidebar.jsx
-gamevault-frontend/src/components/layout/Footer.jsx
+Nutrient-frontend/src/components/layout/Navbar.jsx
+Nutrient-frontend/src/components/layout/Sidebar.jsx
+Nutrient-frontend/src/components/layout/Footer.jsx
 ```
 
 The navbar shows:
@@ -255,14 +255,14 @@ The sidebar changes based on role:
 
 - Public/customer/developer users see store discovery links.
 - Developers also see Dev Hub.
-- Admins see dashboard, users, games, and analytics links.
+- Admins see dashboard, users, supplements, and analytics links.
 
 ### 6.4 API Client
 
 All frontend-backend communication is centralized in:
 
 ```txt
-gamevault-frontend/src/services/api.js
+Nutrient-frontend/src/services/api.js
 ```
 
 This file defines:
@@ -271,11 +271,11 @@ This file defines:
 - `setAuthToken`
 - `getAuthToken`
 - `assetUrl`
-- `normalizeGame`
+- `normalizeProduct`
 - `normalizeUser`
 - `normalizeReview`
 - `authApi`
-- `gamesApi`
+- `supplementsApi`
 - `orderApi`
 - `reviewApi`
 - `adminApi`
@@ -297,9 +297,9 @@ The frontend UI expects convenient display aliases such as `id`, `genre`, `image
 
 The frontend therefore normalizes backend objects in `api.js`:
 
-#### `normalizeGame`
+#### `normalizeProduct`
 
-Maps backend game data into frontend-friendly data:
+Maps backend supplement data into frontend-friendly data:
 
 - `_id` -> `id`
 - `category` -> `genre`
@@ -333,7 +333,7 @@ This normalization layer keeps the frontend UI clean and prevents database namin
 Authentication state is handled in:
 
 ```txt
-gamevault-frontend/src/context/AuthContext.jsx
+Nutrient-frontend/src/context/AuthContext.jsx
 ```
 
 It stores and exposes:
@@ -342,7 +342,7 @@ It stores and exposes:
 - `loading`
 - `cart`
 - `library`
-- `libraryGames`
+- `librarysupplements`
 - `orders`
 - `cartTotal`
 - `cartCount`
@@ -352,7 +352,7 @@ It stores and exposes:
 - `addToCart`
 - `removeFromCart`
 - `clearCart`
-- `purchaseGames`
+- `purchasesupplements`
 - `updateProfile`
 - `refreshCart`
 - `refreshLibrary`
@@ -376,31 +376,31 @@ On app load:
 3. It then loads cart, library, and orders from the backend.
 4. If token validation fails, it clears the session.
 
-### 6.7 Game Context
+### 6.7 supplement Context
 
-Game catalog state is handled in:
+supplement catalog state is handled in:
 
 ```txt
-gamevault-frontend/src/context/GameContext.jsx
+Nutrient-frontend/src/context/ProductContext.jsx
 ```
 
 It stores:
 
-- `games`
+- `supplements`
 - `loading`
 - `error`
 
 It exposes:
 
-- `refreshGames`
-- `addGame`
-- `updateGame`
-- `removeGame`
+- `refreshsupplements`
+- `addProduct`
+- `updateProduct`
+- `removeProduct`
 
-It loads games from:
+It loads supplements from:
 
 ```txt
-GET /api/games?limit=100&sort=featured
+GET /api/supplements?limit=100&sort=featured
 ```
 
 This context feeds the home page, store page, navbar search, and developer/admin flows.
@@ -412,25 +412,25 @@ This context feeds the home page, store page, navbar search, and developer/admin
 File:
 
 ```txt
-gamevault-frontend/src/pages/Home.jsx
+Nutrient-frontend/src/pages/Home.jsx
 ```
 
-Uses `GameContext` to show:
+Uses `ProductContext` to show:
 
 - Featured carousel.
 - New releases.
 - Top sellers.
-- Free-to-play games.
+- Free-to-play supplements.
 - Genre links.
 
-Games are loaded from the backend, not from local mock state.
+supplements are loaded from the backend, not from local mock state.
 
 #### Store
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/Store.jsx
+Nutrient-frontend/src/pages/Store.jsx
 ```
 
 Uses backend-loaded catalog data and provides frontend-side:
@@ -440,22 +440,22 @@ Uses backend-loaded catalog data and provides frontend-side:
 - Price range filter.
 - Free-only filter.
 - Sorting.
-- Quick filters for new, top, and free games.
+- Quick filters for new, top, and free supplements.
 
 The store uses `GENRES` from `mockData.js` only for static filter labels.
 
-#### Game Detail
+#### supplement Detail
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/GameDetail.jsx
+Nutrient-frontend/src/pages/ProductDetail.jsx
 ```
 
 Loads:
 
-- Game detail from `GET /api/games/:id`
-- Reviews from `GET /api/games/:id/reviews`
+- supplement detail from `GET /api/supplements/:id`
+- Reviews from `GET /api/supplements/:id/reviews`
 
 Supports:
 
@@ -469,7 +469,7 @@ Supports:
 File:
 
 ```txt
-gamevault-frontend/src/pages/Cart.jsx
+Nutrient-frontend/src/pages/Cart.jsx
 ```
 
 Uses `AuthContext.cart`, which is loaded from:
@@ -481,7 +481,7 @@ GET /api/orders/cart
 Supports:
 
 - Displaying cart items.
-- Removing a game from cart.
+- Removing a supplement from cart.
 - Navigating to checkout.
 
 #### Checkout
@@ -489,7 +489,7 @@ Supports:
 File:
 
 ```txt
-gamevault-frontend/src/pages/Checkout.jsx
+Nutrient-frontend/src/pages/Checkout.jsx
 ```
 
 Uses:
@@ -501,7 +501,7 @@ POST /api/orders/checkout
 Checkout is mock payment. It always succeeds if the cart is valid, then:
 
 - Creates an order.
-- Adds games to the user's library.
+- Adds supplements to the user's library.
 - Clears cart.
 - Updates purchase history.
 
@@ -510,23 +510,23 @@ Checkout is mock payment. It always succeeds if the cart is valid, then:
 File:
 
 ```txt
-gamevault-frontend/src/pages/Library.jsx
+Nutrient-frontend/src/pages/Library.jsx
 ```
 
-Uses `AuthContext.libraryGames`, loaded from:
+Uses `AuthContext.librarysupplements`, loaded from:
 
 ```txt
 GET /api/orders/library
 ```
 
-Shows owned games and supports local library search.
+Shows owned supplements and supports local library search.
 
 #### Profile
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/Profile.jsx
+Nutrient-frontend/src/pages/Profile.jsx
 ```
 
 Uses:
@@ -548,7 +548,7 @@ This allows editing the user's display name.
 File:
 
 ```txt
-gamevault-frontend/src/pages/DeveloperHub.jsx
+Nutrient-frontend/src/pages/DeveloperHub.jsx
 ```
 
 Developer-only page.
@@ -556,68 +556,68 @@ Developer-only page.
 Uses:
 
 ```txt
-POST /api/games
+POST /api/supplements
 ```
 
-Developers can publish new games. The backend ensures only users with role `developer` can access this route.
+Developers can publish new supplements. The backend ensures only users with role `developer` can access this route.
 
 #### Admin Dashboard
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/admin/AdminDashboard.jsx
+Nutrient-frontend/src/pages/admin/AdminDashboard.jsx
 ```
 
 Uses:
 
 ```txt
 GET /api/admin/stats
-GET /api/admin/games
+GET /api/admin/supplements
 GET /api/admin/users
 ```
 
 Shows:
 
 - Total users.
-- Total games.
+- Total supplements.
 - Total orders.
 - Total revenue.
-- Top selling games.
+- Top selling supplements.
 - Genre breakdown.
 - Recent users.
 
-#### Admin Games
+#### Admin supplements
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/admin/AdminGames.jsx
+Nutrient-frontend/src/pages/admin/Adminsupplements.jsx
 ```
 
 Uses:
 
 ```txt
-GET /api/admin/games
-POST /api/admin/games
-PUT /api/admin/games/:id
-DELETE /api/admin/games/:id
+GET /api/admin/supplements
+POST /api/admin/supplements
+PUT /api/admin/supplements/:id
+DELETE /api/admin/supplements/:id
 ```
 
 Admins can:
 
-- View all games.
-- Search/filter/sort games.
-- Add games.
-- Edit games.
-- Delete games.
+- View all supplements.
+- Search/filter/sort supplements.
+- Add supplements.
+- Edit supplements.
+- Delete supplements.
 
 #### Admin Users
 
 File:
 
 ```txt
-gamevault-frontend/src/pages/admin/AdminUsers.jsx
+Nutrient-frontend/src/pages/admin/AdminUsers.jsx
 ```
 
 Uses:
@@ -644,7 +644,7 @@ Admins can:
 Main backend file:
 
 ```txt
-gamevault-backend/server.js
+Nutrient-backend/server.js
 ```
 
 Responsibilities:
@@ -666,7 +666,7 @@ Mounted route groups:
 
 ```txt
 /api/auth
-/api/games
+/api/supplements
 /api/orders
 /api/reviews
 /api/admin
@@ -677,7 +677,7 @@ Mounted route groups:
 File:
 
 ```txt
-gamevault-backend/config/db.js
+Nutrient-backend/config/db.js
 ```
 
 Uses Mongoose to connect to:
@@ -719,7 +719,7 @@ The frontend API client depends on this envelope.
 File:
 
 ```txt
-gamevault-backend/middleware/authMiddleware.js
+Nutrient-backend/middleware/authMiddleware.js
 ```
 
 Checks:
@@ -740,7 +740,7 @@ req.user
 File:
 
 ```txt
-gamevault-backend/middleware/roleMiddleware.js
+Nutrient-backend/middleware/roleMiddleware.js
 ```
 
 Exports:
@@ -763,7 +763,7 @@ Used to protect developer-only and admin-only routes.
 File:
 
 ```txt
-gamevault-backend/middleware/errorMiddleware.js
+Nutrient-backend/middleware/errorMiddleware.js
 ```
 
 Handles:
@@ -784,7 +784,7 @@ Always returns the global error response format.
 File:
 
 ```txt
-gamevault-backend/models/User.js
+Nutrient-backend/models/User.js
 ```
 
 Fields:
@@ -798,8 +798,8 @@ Fields:
 | `profile.fullName` | String | Full display name |
 | `profile.avatar` | String | Avatar path/url |
 | `profile.bio` | String | User biography |
-| `cart` | ObjectId[] | References games in cart |
-| `library` | ObjectId[] | References owned games |
+| `cart` | ObjectId[] | References supplements in cart |
+| `library` | ObjectId[] | References owned supplements |
 | `createdAt` | Date | Auto timestamp |
 | `updatedAt` | Date | Auto timestamp |
 
@@ -810,27 +810,27 @@ Important behavior:
 - `password` has `select: false`, so it is not returned by normal queries.
 - `matchPassword(password)` compares login password with hashed password.
 
-### 9.2 Game Model
+### 9.2 supplement Model
 
 File:
 
 ```txt
-gamevault-backend/models/Game.js
+Nutrient-backend/models/supplement.js
 ```
 
 Fields:
 
 | Field | Type | Purpose |
 |---|---|---|
-| `title` | String | Game title |
-| `description` | String | Game description |
+| `title` | String | supplement title |
+| `description` | String | supplement description |
 | `developer` | ObjectId | Reference to user/developer |
 | `developerName` | String | Display name for studio/developer |
-| `price` | Number | Game price |
-| `category` | String | Game genre/category |
+| `price` | Number | supplement price |
+| `category` | String | supplement genre/category |
 | `coverImage` | String | Cover image path/url |
 | `screenshots` | String[] | Screenshot paths/urls |
-| `gameFile` | String | Downloadable file path |
+| `ProductFile` | String | Downloadable file path |
 | `averageRating` | Number | Average review score |
 | `totalReviews` | Number | Number of reviews |
 | `totalSales` | Number | Sales/download count |
@@ -850,7 +850,7 @@ Indexes:
 File:
 
 ```txt
-gamevault-backend/models/Order.js
+Nutrient-backend/models/Order.js
 ```
 
 Fields:
@@ -858,24 +858,24 @@ Fields:
 | Field | Type | Purpose |
 |---|---|---|
 | `user` | ObjectId | Buyer |
-| `games` | Array | Purchased game snapshots |
-| `games.game` | ObjectId | Game reference |
-| `games.title` | String | Purchased title snapshot |
-| `games.price` | Number | Purchased price snapshot |
+| `supplements` | Array | Purchased supplement snapshots |
+| `supplements.supplement` | ObjectId | supplement reference |
+| `supplements.title` | String | Purchased title snapshot |
+| `supplements.price` | Number | Purchased price snapshot |
 | `totalAmount` | Number | Total order price |
 | `paymentStatus` | String | `pending`, `completed`, or `failed` |
 | `paymentMethod` | String | Mock payment method |
 | `createdAt` | Date | Auto timestamp |
 | `updatedAt` | Date | Auto timestamp |
 
-The order stores title and price snapshots so purchase history remains understandable even if the game changes later.
+The order stores title and price snapshots so purchase history remains understandable even if the supplement changes later.
 
 ### 9.4 Review Model
 
 File:
 
 ```txt
-gamevault-backend/models/Review.js
+Nutrient-backend/models/Review.js
 ```
 
 Fields:
@@ -883,7 +883,7 @@ Fields:
 | Field | Type | Purpose |
 |---|---|---|
 | `user` | ObjectId | Reviewer |
-| `game` | ObjectId | Reviewed game |
+| `supplement` | ObjectId | Reviewed supplement |
 | `rating` | Number | Rating from 1 to 5 |
 | `comment` | String | Review text |
 | `createdAt` | Date | Auto timestamp |
@@ -892,13 +892,13 @@ Fields:
 Important rule:
 
 ```txt
-One user can review one game only once.
+One user can review one supplement only once.
 ```
 
 This is enforced with a unique compound index:
 
 ```js
-{ user: 1, game: 1 }
+{ user: 1, supplement: 1 }
 ```
 
 ## 10. Backend Controllers
@@ -908,7 +908,7 @@ This is enforced with a unique compound index:
 File:
 
 ```txt
-gamevault-backend/controllers/authController.js
+Nutrient-backend/controllers/authController.js
 ```
 
 Handles:
@@ -928,33 +928,33 @@ Main functions:
 - `updateProfile`
 - `formatUser`
 
-### 10.2 Game Controller
+### 10.2 supplement Controller
 
 File:
 
 ```txt
-gamevault-backend/controllers/gameController.js
+Nutrient-backend/controllers/ProductController.js
 ```
 
 Handles:
 
-- Game list with search/filter/pagination.
-- Single game detail.
-- Developer game creation.
-- Developer game update.
-- Developer game deletion.
-- Protected game downloads.
-- Game response formatting.
+- supplement list with search/filter/pagination.
+- Single supplement detail.
+- Developer supplement creation.
+- Developer supplement update.
+- Developer supplement deletion.
+- Protected supplement downloads.
+- supplement response formatting.
 
 Main functions:
 
-- `getGames`
-- `getGameById`
-- `createGame`
-- `updateGame`
-- `deleteGame`
-- `downloadGame`
-- `formatGame`
+- `getsupplements`
+- `getProductById`
+- `createProduct`
+- `updateProduct`
+- `deleteProduct`
+- `downloadProduct`
+- `formatProduct`
 
 Developer routes check ownership where required.
 
@@ -963,7 +963,7 @@ Developer routes check ownership where required.
 File:
 
 ```txt
-gamevault-backend/controllers/orderController.js
+Nutrient-backend/controllers/orderController.js
 ```
 
 Handles:
@@ -991,30 +991,30 @@ Main functions:
 File:
 
 ```txt
-gamevault-backend/controllers/reviewController.js
+Nutrient-backend/controllers/reviewController.js
 ```
 
 Handles:
 
 - Creating reviews.
-- Getting game reviews.
+- Getting supplement reviews.
 - Updating own reviews.
 - Deleting own reviews.
 - Admin review deletion.
-- Recalculating game average rating.
+- Recalculating supplement average rating.
 
 Main functions:
 
 - `createReview`
-- `getGameReviews`
+- `getProductReviews`
 - `updateReview`
 - `deleteReview`
-- `updateGameRating`
+- `updateProductRating`
 
 Important rule:
 
 ```txt
-A user can review a game only if they own it.
+A user can review a supplement only if they own it.
 ```
 
 Ownership is checked through the user's library and completed orders.
@@ -1024,7 +1024,7 @@ Ownership is checked through the user's library and completed orders.
 File:
 
 ```txt
-gamevault-backend/controllers/adminController.js
+Nutrient-backend/controllers/adminController.js
 ```
 
 Handles:
@@ -1033,10 +1033,10 @@ Handles:
 - Admin user creation.
 - Admin user update.
 - Admin user deletion.
-- Admin game listing.
-- Admin game creation.
-- Admin game update.
-- Admin game deletion.
+- Admin supplement listing.
+- Admin supplement creation.
+- Admin supplement update.
+- Admin supplement deletion.
 - Admin platform statistics.
 
 Main functions:
@@ -1045,10 +1045,10 @@ Main functions:
 - `createAdminUser`
 - `updateAdminUser`
 - `deleteAdminUser`
-- `getAdminGames`
-- `createAdminGame`
-- `updateAdminGame`
-- `deleteAdminGame`
+- `getAdminsupplements`
+- `createAdminProduct`
+- `updateAdminProduct`
+- `deleteAdminProduct`
 - `getAdminStats`
 
 ## 11. API Routes
@@ -1068,23 +1068,23 @@ Base path:
 | GET | `/me` | Authenticated | Get current user |
 | PUT | `/profile` | Authenticated | Update own profile |
 
-### 11.2 Game Routes
+### 11.2 supplement Routes
 
 Base path:
 
 ```txt
-/api/games
+/api/supplements
 ```
 
 | Method | Endpoint | Access | Purpose |
 |---|---|---|---|
-| GET | `/` | Public | List games |
-| GET | `/:id/reviews` | Public | Get reviews for a game |
-| GET | `/:id/download` | Authenticated owner | Download owned game |
-| GET | `/:id` | Public | Get game detail |
-| POST | `/` | Developer only | Create game |
-| PUT | `/:id` | Developer owner only | Update own game |
-| DELETE | `/:id` | Developer owner only | Delete own game |
+| GET | `/` | Public | List supplements |
+| GET | `/:id/reviews` | Public | Get reviews for a supplement |
+| GET | `/:id/download` | Authenticated owner | Download owned supplement |
+| GET | `/:id` | Public | Get supplement detail |
+| POST | `/` | Developer only | Create supplement |
+| PUT | `/:id` | Developer owner only | Update own supplement |
+| DELETE | `/:id` | Developer owner only | Delete own supplement |
 
 List query supports:
 
@@ -1120,12 +1120,12 @@ All order routes require authentication.
 | Method | Endpoint | Purpose |
 |---|---|---|
 | GET | `/cart` | View cart |
-| POST | `/cart` | Add game to cart through body |
-| POST | `/cart/:gameId` | Add game to cart through URL param |
+| POST | `/cart` | Add supplement to cart through body |
+| POST | `/cart/:ProductId` | Add supplement to cart through URL param |
 | DELETE | `/cart` | Clear cart |
-| DELETE | `/cart/:gameId` | Remove one game from cart |
+| DELETE | `/cart/:ProductId` | Remove one supplement from cart |
 | POST | `/checkout` | Mock checkout and create order |
-| GET | `/library` | Get owned games |
+| GET | `/library` | Get owned supplements |
 | GET | `/` | Get user's orders |
 
 ### 11.4 Review Routes
@@ -1163,10 +1163,10 @@ role: admin
 | POST | `/users` | Create user |
 | PUT | `/users/:id` | Update user |
 | DELETE | `/users/:id` | Delete user |
-| GET | `/games` | List all games |
-| POST | `/games` | Create game |
-| PUT | `/games/:id` | Update game |
-| DELETE | `/games/:id` | Delete game |
+| GET | `/supplements` | List all supplements |
+| POST | `/supplements` | Create supplement |
+| PUT | `/supplements/:id` | Update supplement |
+| DELETE | `/supplements/:id` | Delete supplement |
 | GET | `/stats` | Get platform statistics |
 
 ## 12. Authentication and Authorization
@@ -1211,7 +1211,7 @@ Frontend sends:
 
 ```json
 {
-  "email": "user@gamevault.com",
+  "email": "user@Nutrient.com",
   "password": "password123"
 }
 ```
@@ -1256,7 +1256,7 @@ The frontend attaches this automatically in `api.js`.
 | Role | Permissions |
 |---|---|
 | customer | Browse, cart, checkout, library, reviews, downloads |
-| developer | Customer actions plus create/update/delete own games |
+| developer | Customer actions plus create/update/delete own supplements |
 | admin | Admin panel, all admin routes |
 
 ## 13. Validation
@@ -1267,8 +1267,8 @@ Validated areas:
 
 - Register
 - Login
-- Game creation
-- Game update
+- supplement creation
+- supplement update
 - Review creation
 - Review update
 
@@ -1290,14 +1290,14 @@ Database-level validation is also present through Mongoose schemas.
 Multer is configured in:
 
 ```txt
-gamevault-backend/routes/gameRoutes.js
+Nutrient-backend/routes/ProductRoutes.js
 ```
 
 Upload folders:
 
 ```txt
-gamevault-backend/uploads/games/images
-gamevault-backend/uploads/games/files
+Nutrient-backend/uploads/supplements/images
+Nutrient-backend/uploads/supplements/files
 ```
 
 Supported fields:
@@ -1305,7 +1305,7 @@ Supported fields:
 - `coverImage`
 - `image`
 - `screenshots`
-- `gameFile`
+- `ProductFile`
 
 Uploaded files are served through:
 
@@ -1318,18 +1318,18 @@ Uploaded files are served through:
 Download endpoint:
 
 ```txt
-GET /api/games/:id/download
+GET /api/supplements/:id/download
 ```
 
 Rules:
 
 1. User must be logged in.
-2. User must own the game.
-3. Game must have a file path.
+2. User must own the supplement.
+3. supplement must have a file path.
 4. File path must resolve inside the uploads folder.
 5. Backend uses `res.download()`.
 
-This prevents users from downloading games they do not own and prevents unsafe path traversal.
+This prevents users from downloading supplements they do not own and prevents unsafe path traversal.
 
 ## 15. Cart, Orders, and Library Workflow
 
@@ -1338,7 +1338,7 @@ This prevents users from downloading games they do not own and prevents unsafe p
 Frontend:
 
 ```txt
-GameCard / GameDetail -> AuthContext.addToCart
+ProductCard / ProductDetail -> AuthContext.addToCart
 ```
 
 Backend:
@@ -1349,17 +1349,17 @@ POST /api/orders/cart
 
 Checks:
 
-- Game id is valid.
-- Game exists and is published.
-- Game is not already owned.
-- Game is not already in cart.
+- supplement id is valid.
+- supplement exists and is published.
+- supplement is not already owned.
+- supplement is not already in cart.
 
 ### 15.2 Checkout
 
 Frontend:
 
 ```txt
-Checkout -> AuthContext.purchaseGames
+Checkout -> AuthContext.purchasesupplements
 ```
 
 Backend:
@@ -1371,12 +1371,12 @@ POST /api/orders/checkout
 Backend behavior:
 
 1. Loads user's cart.
-2. Removes already-owned games from checkout list.
+2. Removes already-owned supplements from checkout list.
 3. Creates an order.
 4. Marks payment as `completed`.
-5. Adds purchased games to library.
+5. Adds purchased supplements to library.
 6. Clears cart.
-7. Increments game sales count.
+7. Increments supplement sales count.
 8. Returns order and updated library.
 
 ### 15.3 Library
@@ -1384,7 +1384,7 @@ Backend behavior:
 Frontend:
 
 ```txt
-Library page -> AuthContext.libraryGames
+Library page -> AuthContext.librarysupplements
 ```
 
 Backend:
@@ -1406,13 +1406,13 @@ The library is the source of truth for:
 Frontend:
 
 ```txt
-GameDetail -> gamesApi.reviews(id)
+ProductDetail -> supplementsApi.reviews(id)
 ```
 
 Backend:
 
 ```txt
-GET /api/games/:id/reviews
+GET /api/supplements/:id/reviews
 ```
 
 ### 16.2 Submit Review
@@ -1420,7 +1420,7 @@ GET /api/games/:id/reviews
 Frontend:
 
 ```txt
-GameDetail -> reviewApi.create
+ProductDetail -> reviewApi.create
 ```
 
 Backend:
@@ -1432,17 +1432,17 @@ POST /api/reviews
 Rules:
 
 - User must be logged in.
-- User must own the game.
+- User must own the supplement.
 - Rating must be 1 to 5.
 - Comment must be at least 3 characters.
-- User can only review each game once.
+- User can only review each supplement once.
 
 After review creation, the backend recalculates:
 
 - `averageRating`
 - `totalReviews`
 
-on the `Game` document.
+on the `supplement` document.
 
 ## 17. Admin Workflow
 
@@ -1454,13 +1454,13 @@ Admin capabilities:
 
 - View platform stats.
 - View recent users.
-- View top games.
+- View top supplements.
 - Add users.
 - Edit users.
 - Delete users.
-- Add games.
-- Edit games.
-- Delete games.
+- Add supplements.
+- Edit supplements.
+- Delete supplements.
 
 Backend admin protection:
 
@@ -1487,10 +1487,10 @@ The frontend protects this route with:
 ProtectedRoute role="developer"
 ```
 
-Developer game creation uses:
+Developer supplement creation uses:
 
 ```txt
-POST /api/games
+POST /api/supplements
 ```
 
 Backend protection:
@@ -1503,7 +1503,7 @@ authorizeRoles("developer")
 Developer update/delete routes additionally enforce ownership:
 
 ```txt
-Only the developer who owns the game can update or delete it.
+Only the developer who owns the supplement can update or delete it.
 ```
 
 ## 19. Seed Data
@@ -1511,7 +1511,7 @@ Only the developer who owns the game can update or delete it.
 Seed script:
 
 ```txt
-gamevault-backend/scripts/seed.js
+Nutrient-backend/scripts/seed.js
 ```
 
 Run from project root:
@@ -1523,20 +1523,20 @@ npm run seed
 The seed script:
 
 1. Connects to MongoDB.
-2. Clears users, games, orders, and reviews.
+2. Clears users, supplements, orders, and reviews.
 3. Creates demo accounts.
-4. Creates catalog games from frontend seed catalog data.
+4. Creates catalog supplements from frontend seed catalog data.
 5. Creates a demo downloadable file.
-6. Adds some games to the customer library.
+6. Adds some supplements to the customer library.
 7. Creates demo reviews.
 8. Creates demo orders.
 
 Demo accounts:
 
 ```txt
-Customer:  user@gamevault.com / password123
-Developer: dev@gamevault.com / password123
-Admin:     admin@gamevault.com / password123
+Customer:  user@Nutrient.com / password123
+Developer: dev@Nutrient.com / password123
+Admin:     admin@Nutrient.com / password123
 ```
 
 The seed script imports `mockData.js` only as a convenient source for initial catalog content. Runtime frontend pages load data from MongoDB through the backend API.
@@ -1546,24 +1546,24 @@ The seed script imports `mockData.js` only as a convenient source for initial ca
 Frontend public images:
 
 ```txt
-gamevault-frontend/public/images
-gamevault-frontend/public/images/screenshots
+Nutrient-frontend/public/images
+Nutrient-frontend/public/images/screenshots
 ```
 
-These are used by seeded games as cover images and screenshots.
+These are used by seeded supplements as cover images and screenshots.
 
 Backend upload directory:
 
 ```txt
-gamevault-backend/uploads
+Nutrient-backend/uploads
 ```
 
-This is for uploaded cover images, screenshots, and game files.
+This is for uploaded cover images, screenshots, and supplement files.
 
 Frontend production build output:
 
 ```txt
-gamevault-frontend/dist
+Nutrient-frontend/dist
 ```
 
 This is generated by:
@@ -1589,12 +1589,12 @@ MongoDB must be running before the backend can connect.
 If dependencies are not already installed:
 
 ```bash
-cd gamevault-backend
+cd Nutrient-backend
 npm install
 ```
 
 ```bash
-cd ../gamevault-frontend
+cd ../Nutrient-frontend
 npm install
 ```
 
@@ -1648,7 +1648,7 @@ The project includes:
 - JWT expiry.
 - Bearer token authorization.
 - Role-based access control.
-- Owner-only developer game edits.
+- Owner-only developer supplement edits.
 - Owner-only review edits.
 - Owner-only downloads.
 - Input validation with express-validator.
@@ -1680,13 +1680,13 @@ Login.jsx
 
 ```txt
 App.jsx
-  -> GameProvider
-    -> gamesApi.list
-      -> GET /api/games
-        -> getGames
-          -> Game.find(...)
-      <- games
-    -> normalizeGame
+  -> ProductProvider
+    -> supplementsApi.list
+      -> GET /api/supplements
+        -> getsupplements
+          -> supplement.find(...)
+      <- supplements
+    -> normalizeProduct
   -> Home / Store / Navbar search
 ```
 
@@ -1694,14 +1694,14 @@ App.jsx
 
 ```txt
 Checkout.jsx
-  -> AuthContext.purchaseGames
+  -> AuthContext.purchasesupplements
     -> orderApi.checkout
       -> POST /api/orders/checkout
         -> checkout
           -> create Order
-          -> add games to library
+          -> add supplements to library
           -> clear cart
-          -> increment game sales
+          -> increment supplement sales
       <- order + library
     -> update frontend cart/library/orders
 ```
@@ -1709,13 +1709,13 @@ Checkout.jsx
 ### 23.4 Review Flow
 
 ```txt
-GameDetail.jsx
+ProductDetail.jsx
   -> reviewApi.create
     -> POST /api/reviews
       -> createReview
         -> verify ownership
         -> create review
-        -> update game rating
+        -> update supplement rating
       <- review
   -> UI prepends review
 ```
@@ -1758,7 +1758,7 @@ npm run seed
 A live backend smoke test verified:
 
 - Root health endpoint.
-- Games endpoint.
+- supplements endpoint.
 - Login endpoint.
 - Authenticated cart endpoint.
 
@@ -1768,20 +1768,24 @@ A live backend smoke test verified:
 - Runtime catalog, cart, library, orders, users, and admin data come from the backend.
 - `mockData.js` remains useful as seed data and for static genre labels.
 - Payment is intentionally mocked and always completes successfully for academic/demo purposes.
-- Game file downloads use a seeded demo text file unless a developer uploads a real file.
+- supplement file downloads use a seeded demo text file unless a developer uploads a real file.
 - Uploaded files are stored locally, not in cloud storage.
 - The project is designed for local development with MongoDB on the developer machine.
 
 ## 26. Summary
 
-GameVault is now a connected full-stack application:
+Nutrient is now a connected full-stack application:
 
 - React frontend renders the user interface and calls backend APIs.
 - Express backend handles auth, RBAC, validation, CRUD, cart, checkout, reviews, downloads, admin logic, and file storage.
-- MongoDB stores users, games, orders, reviews, cart references, and library references.
+- MongoDB stores users, supplements, orders, reviews, cart references, and library references.
 - JWT protects authenticated routes.
 - Role middleware protects developer and admin features.
-- Seed data provides demo accounts and an initial game catalog.
+- Seed data provides demo accounts and an initial supplement catalog.
 - One root command can run the full app.
 
 The result is a complete working project suitable for demonstrating frontend integration, backend API design, MongoDB persistence, authentication, authorization, validation, CRUD operations, and role-based workflows.
+
+
+
+

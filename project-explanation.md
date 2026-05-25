@@ -1,4 +1,4 @@
-Alright — I’ve gone through **both your rubric + your full GameVault proposal**, and I’m going to be very direct with you:
+﻿Alright — I’ve gone through **both your rubric + your full Nutrient proposal**, and I’m going to be very direct with you:
 
 👉 Your proposal is actually **very strong and already aligned ~80–85% with the rubric**.
 But if you just follow it blindly, you can still lose marks — because the **rubric is VERY specific about implementation details (security, validation, RBAC, etc.)**.
@@ -91,7 +91,7 @@ authorizeRoles('admin')
 
 You already have:
 
-* Games
+* supplements
 * Orders
 * Reviews 
 
@@ -148,7 +148,7 @@ Rubric checks:
 
 * Home
 * Store
-* Game Detail
+* supplement Detail
 * Login/Register
 * Cart
 * Dashboard
@@ -266,7 +266,7 @@ Build:
 Create:
 
 * User
-* Game
+* supplement
 * Order
 * Review
 
@@ -280,7 +280,7 @@ Don’t build everything randomly.
 
 1. User registers
 2. Logs in
-3. Views games
+3. Views supplements
 4. Adds to cart
 5. Checkout
 6. Sees in library
@@ -340,7 +340,7 @@ I’ll save you here:
 👉 Build in this order:
 
 1. Auth (JWT + roles)
-2. Games (CRUD)
+2. supplements (CRUD)
 3. Cart + Orders
 4. Library
 5. Reviews
@@ -398,7 +398,7 @@ Split work like this:
 ### 👨‍💻 Person 1 (Backend Focus)
 
 * Auth + Security
-* APIs (Games, Cart, Orders, Reviews)
+* APIs (supplements, Cart, Orders, Reviews)
 * RBAC
 * Database
 
@@ -466,22 +466,22 @@ Split work like this:
 
 ---
 
-## 🔥 DAY 3: Games (CORE FEATURE)
+## 🔥 DAY 3: supplements (CORE FEATURE)
 
 ### Backend:
 
-* Game model
+* supplement model
 * CRUD APIs
 * Search + filter (basic)
 
 ### Frontend:
 
-* Game listing page
-* Game card UI
-* Game detail page
+* supplement listing page
+* supplement card UI
+* supplement detail page
 
 👉 Goal:
-✔ Games visible on frontend
+✔ supplements visible on frontend
 
 ---
 
@@ -489,7 +489,7 @@ Split work like this:
 
 ### Backend:
 
-* Upload game (Multer)
+* Upload supplement (Multer)
 * Update/delete
 
 ### Frontend:
@@ -532,7 +532,7 @@ Split work like this:
 * Review UI
 
 👉 Goal:
-✔ User sees purchased games
+✔ User sees purchased supplements
 ✔ Can review
 
 ---
@@ -542,12 +542,12 @@ Split work like this:
 ### Backend:
 
 * Admin routes
-* Get users/games
+* Get users/supplements
 
 ### Frontend:
 
 * Admin dashboard
-* Tables (users/games)
+* Tables (users/supplements)
 
 👉 KEEP SIMPLE → table is enough
 
@@ -926,12 +926,12 @@ I’ve grouped this so you can **directly map it to implementation**.
 * View profile
 * Update profile
 
-### Games:
+### supplements:
 
 * Create (developer)
 * Read (all users)
-* Update (developer - own games)
-* Delete (developer - own games)
+* Update (developer - own supplements)
+* Delete (developer - own supplements)
 
 ### Reviews:
 
@@ -941,12 +941,12 @@ I’ve grouped this so you can **directly map it to implementation**.
 
 ---
 
-# 🎮 4. Game Store (CORE FEATURE)
+# 💊 4. supplements store (CORE FEATURE)
 
 ### Features:
 
-* Browse all games
-* Game detail page
+* Browse all supplements
+* supplement detail page
 * Search by title
 * Filter by category
 * Filter by price
@@ -972,9 +972,9 @@ I’ve grouped this so you can **directly map it to implementation**.
 
 ### Features:
 
-* View purchased games
+* View purchased supplements
 * Download button (basic file access)
-* Only show owned games
+* Only show owned supplements
 
 ---
 
@@ -993,10 +993,10 @@ I’ve grouped this so you can **directly map it to implementation**.
 
 ### Features:
 
-* Upload game (title, price, file, image)
-* View own games
-* Edit game
-* Delete game
+* Upload supplement (title, price, file, image)
+* View own supplements
+* Edit supplement
+* Delete supplement
 
 👉 Keep UI simple (forms + table)
 
@@ -1007,9 +1007,9 @@ I’ve grouped this so you can **directly map it to implementation**.
 ### Features:
 
 * View all users
-* View all games
+* View all supplements
 * Change user roles (optional but good)
-* Basic stats (total users/games/orders)
+* Basic stats (total users/supplements/orders)
 
 ---
 
@@ -1042,7 +1042,7 @@ I’ve grouped this so you can **directly map it to implementation**.
 
   * Home
   * Store
-  * Game Detail
+  * supplement Detail
   * Cart
   * Login/Register
   * Profile
@@ -1056,7 +1056,7 @@ I’ve grouped this so you can **directly map it to implementation**.
 
 * Consistent layout (colors/fonts)
 * Responsive design (mobile + desktop)
-* Cards for games
+* Cards for supplements
 * Clean spacing
 
 ### Bonus (easy marks):
@@ -1101,9 +1101,9 @@ I’ve grouped this so you can **directly map it to implementation**.
 
 ### Include:
 
-* Game descriptions
+* supplement descriptions
 * Images/screenshots
-* Unique branding (GameVault theme)
+* Unique branding (Nutrient theme)
 
 ---
 
@@ -1143,7 +1143,7 @@ Don’t implement:
 If you run out of time, follow THIS:
 
 1. Auth + RBAC
-2. Game CRUD
+2. supplement CRUD
 3. Cart + Checkout
 4. Library
 5. Reviews
@@ -1163,3 +1163,5 @@ I can now:
 Just say:
 👉 *“divide tasks between 2 people”*
  
+
+

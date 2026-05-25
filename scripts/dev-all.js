@@ -10,13 +10,13 @@ const processes = [
   {
     name: "backend",
     color: "\x1b[36m",
-    cwd: path.join(rootDir, "gamevault-backend"),
+    cwd: path.join(rootDir, "nutrient-backend"),
     args: ["run", "dev"],
   },
   {
     name: "frontend",
     color: "\x1b[35m",
-    cwd: path.join(rootDir, "gamevault-frontend"),
+    cwd: path.join(rootDir, "nutrient-frontend"),
     args: ["run", "dev"],
   },
 ];

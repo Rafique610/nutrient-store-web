@@ -1,8 +1,8 @@
-# GameVault 🎮
+﻿# Nutrient 💊
 
-A full-stack game store web application where customers can browse and purchase games, developers can publish and manage their titles, and admins can oversee the entire platform.
+A full-stack supplements store web application where customers can browse and purchase supplements, developers can publish and manage their titles, and admins can oversee the entire platform.
 
-**Live Demo:** [gamevault-store.vercel.app](https://gamevault-store.vercel.app)  
+**Live Demo:** [Nutrient-store.vercel.app](https://Nutrient-store.vercel.app)  
 **Backend API:** [web-project-eskq.onrender.com](https://web-project-eskq.onrender.com)
 
 ---\
@@ -23,24 +23,24 @@ A full-stack game store web application where customers can browse and purchase 
 ## Features
 
 ### Customer
-- Browse and search the game store with filters (genre, price, sort)
-- View detailed game pages with screenshots and reviews
-- Add games to cart and checkout (mock payment)
-- Access purchased games in a personal library
-- Download owned games
-- Leave star ratings and written reviews on owned games
+- Browse and search the supplements store with filters (genre, price, sort)
+- View detailed supplement pages with screenshots and reviews
+- Add supplements to cart and checkout (mock payment)
+- Access purchased supplements in a personal library
+- Download owned supplements
+- Leave star ratings and written reviews on owned supplements
 
 ### Developer
-- Publish new games with cover image and screenshots
+- Publish new supplements with cover image and screenshots
 - Manage (edit/delete) their own published titles
-- View per-game stats: downloads, ratings, reviews
+- View per-supplement stats: downloads, ratings, reviews
 - Track estimated revenue from sales
 
 ### Admin
-- Full dashboard with platform-wide stats (users, games, orders, revenue)
+- Full dashboard with platform-wide stats (users, supplements, orders, revenue)
 - Manage all users: create, edit, change roles, delete
-- Manage all games: create, edit, delete
-- View top-selling games and genre breakdown
+- Manage all supplements: create, edit, delete
+- View top-selling supplements and genre breakdown
 
 ### General
 - JWT-based authentication with role-based access control
@@ -85,21 +85,21 @@ A full-stack game store web application where customers can browse and purchase 
 ## Project Structure
 
 ```
-├── gamevault-frontend/
+├── Nutrient-frontend/
 │   ├── public/
-│   │   └── images/          # Static game images and screenshots
+│   │   └── images/          # Static supplement images and screenshots
 │   └── src/
 │       ├── components/
 │       │   ├── layout/      # Navbar, Sidebar, Footer
-│       │   └── ui/          # GameCard, Icon, reusable components
+│       │   └── ui/          # ProductCard, Icon, reusable components
 │       ├── context/
 │       │   ├── AuthContext.jsx   # Auth state, cart, library
-│       │   └── GameContext.jsx   # Global games list
+│       │   └── ProductContext.jsx   # Global supplements list
 │       ├── pages/
-│       │   ├── admin/       # AdminDashboard, AdminGames, AdminUsers
+│       │   ├── admin/       # AdminDashboard, Adminsupplements, AdminUsers
 │       │   ├── Home.jsx
 │       │   ├── Store.jsx
-│       │   ├── GameDetail.jsx
+│       │   ├── ProductDetail.jsx
 │       │   ├── Cart.jsx
 │       │   ├── Checkout.jsx
 │       │   ├── Library.jsx
@@ -110,7 +110,7 @@ A full-stack game store web application where customers can browse and purchase 
 │       └── services/
 │           └── api.js       # All API calls and data normalizers
 │
-└── gamevault-backend/
+└── Nutrient-backend/
     ├── config/
     │   └── db.js            # MongoDB connection
     ├── controllers/         # Business logic
@@ -120,13 +120,13 @@ A full-stack game store web application where customers can browse and purchase 
     │   └── errorMiddleware.js   # Global error handler
     ├── models/
     │   ├── User.js
-    │   ├── Game.js
+    │   ├── supplement.js
     │   ├── Order.js
     │   └── Review.js
     ├── routes/              # Express route definitions
     ├── scripts/
     │   └── seed.js          # Database seeder
-    ├── uploads/             # Uploaded game images and files
+    ├── uploads/             # Uploaded supplement images and files
     └── server.js            # Entry point
 ```
 
@@ -150,14 +150,14 @@ cd <repo-folder>
 ### 2. Set up the backend
 
 ```bash
-cd gamevault-backend
+cd Nutrient-backend
 npm install
 ```
 
 Create a `.env` file (see [Environment Variables](#environment-variables) below), then:
 
 ```bash
-# Seed the database with sample games (optional but recommended)
+# Seed the database with sample supplements (optional but recommended)
 npm run seed
 
 # Start the development server
@@ -169,7 +169,7 @@ The backend runs on `http://localhost:5000`.
 ### 3. Set up the frontend
 
 ```bash
-cd gamevault-frontend
+cd Nutrient-frontend
 npm install
 ```
 
@@ -191,12 +191,12 @@ The frontend runs on `http://localhost:5173`.
 
 ## Environment Variables
 
-### Backend — `gamevault-backend/.env`
+### Backend — `Nutrient-backend/.env`
 
 | Variable | Description | Example |
 |---|---|---|
 | `PORT` | Port the server listens on | `5000` |
-| `MONGO_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/gamevault` |
+| `MONGO_URI` | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/Nutrient` |
 | `JWT_SECRET` | Secret key for signing JWTs | `a_long_random_string` |
 | `JWT_EXPIRE` | JWT expiry duration | `7d` |
 | `CLIENT_URL` | Allowed frontend origin for CORS | `https://your-app.vercel.app` |
@@ -204,7 +204,7 @@ The frontend runs on `http://localhost:5173`.
 | `CLOUDINARY_API_KEY` | Cloudinary API key | `123456789012345` |
 | `CLOUDINARY_API_SECRET` | Cloudinary API secret | `your_api_secret` |
 
-### Frontend — `gamevault-frontend/.env`
+### Frontend — `Nutrient-frontend/.env`
 
 | Variable | Description | Example |
 |---|---|---|
@@ -225,28 +225,28 @@ All endpoints are prefixed with `/api`.
 | GET | `/auth/me` | Required | Get current user profile |
 | PUT | `/auth/profile` | Required | Update profile |
 
-### Games — `/api/games`
+### supplements — `/api/supplements`
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
-| GET | `/games` | Public | List games (supports `search`, `category`, `sort`, `page`, `limit`) |
-| GET | `/games/:id` | Public | Get a single game |
-| GET | `/games/:id/reviews` | Public | Get reviews for a game |
-| GET | `/games/:id/download` | Required | Download an owned game |
-| POST | `/games` | Developer | Publish a new game (multipart/form-data) |
-| PUT | `/games/:id` | Developer | Update own game |
-| DELETE | `/games/:id` | Developer | Delete own game |
+| GET | `/supplements` | Public | List supplements (supports `search`, `category`, `sort`, `page`, `limit`) |
+| GET | `/supplements/:id` | Public | Get a single supplement |
+| GET | `/supplements/:id/reviews` | Public | Get reviews for a supplement |
+| GET | `/supplements/:id/download` | Required | Download an owned supplement |
+| POST | `/supplements` | Developer | Publish a new supplement (multipart/form-data) |
+| PUT | `/supplements/:id` | Developer | Update own supplement |
+| DELETE | `/supplements/:id` | Developer | Delete own supplement |
 
 ### Orders — `/api/orders`
 
 | Method | Endpoint | Auth | Description |
 |---|---|---|---|
 | GET | `/orders/cart` | Required | Get current cart |
-| POST | `/orders/cart` | Required | Add game to cart |
-| DELETE | `/orders/cart/:gameId` | Required | Remove game from cart |
+| POST | `/orders/cart` | Required | Add supplement to cart |
+| DELETE | `/orders/cart/:ProductId` | Required | Remove supplement from cart |
 | DELETE | `/orders/cart` | Required | Clear entire cart |
 | POST | `/orders/checkout` | Required | Checkout and create order |
-| GET | `/orders/library` | Required | Get user's game library |
+| GET | `/orders/library` | Required | Get user's supplement library |
 | GET | `/orders` | Required | Get user's order history |
 
 ### Reviews — `/api/reviews`
@@ -263,15 +263,15 @@ All admin routes require authentication and the `admin` role.
 
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | `/admin/stats` | Platform stats (users, games, orders, revenue) |
+| GET | `/admin/stats` | Platform stats (users, supplements, orders, revenue) |
 | GET | `/admin/users` | List all users |
 | POST | `/admin/users` | Create a user |
 | PUT | `/admin/users/:id` | Update a user |
 | DELETE | `/admin/users/:id` | Delete a user |
-| GET | `/admin/games` | List all games |
-| POST | `/admin/games` | Create a game |
-| PUT | `/admin/games/:id` | Update a game |
-| DELETE | `/admin/games/:id` | Delete a game |
+| GET | `/admin/supplements` | List all supplements |
+| POST | `/admin/supplements` | Create a supplement |
+| PUT | `/admin/supplements/:id` | Update a supplement |
+| DELETE | `/admin/supplements/:id` | Delete a supplement |
 
 ---
 
@@ -279,9 +279,9 @@ All admin routes require authentication and the `admin` role.
 
 | Role | Capabilities |
 |---|---|
-| `customer` | Browse store, purchase games, leave reviews, manage cart and library |
-| `developer` | All customer capabilities + publish and manage own games via Developer Hub |
-| `admin` | Full platform access — manage all users, games, and view analytics |
+| `customer` | Browse store, purchase supplements, leave reviews, manage cart and library |
+| `developer` | All customer capabilities + publish and manage own supplements via Developer Hub |
+| `admin` | Full platform access — manage all users, supplements, and view analytics |
 
 To register as a developer or admin, set the `role` field in the register request body. By default, new accounts are created as `customer`.
 
@@ -292,7 +292,7 @@ To register as a developer or admin, set the `role` field in the register reques
 | | |
 |---|---|
 | ![Home](demo/web1.jpg) | ![Store](demo/web2.jpg) |
-| ![Game Detail](demo/web3.jpg) | ![Cart](demo/web4.jpg) |
+| ![supplement Detail](demo/web3.jpg) | ![Cart](demo/web4.jpg) |
 | ![Library](demo/web5.jpg) | ![Developer Hub](demo/web6.jpg) |
 | ![Admin Dashboard](demo/web7.jpg) | ![Admin Users](demo/web8.jpg) |
 
@@ -303,3 +303,7 @@ To register as a developer or admin, set the `role` field in the register reques
 - **File uploads** (cover images, screenshots) are stored on the server filesystem. On Render's free tier the filesystem is ephemeral — uploaded files will not persist across restarts. For production use, migrate uploads to a cloud storage service such as Cloudinary or AWS S3.
 - **Render free tier** spins down after 15 minutes of inactivity. The first request after a sleep period may take 30–60 seconds to respond while the server wakes up.
 - After deploying the frontend to Vercel, set `CLIENT_URL` in your Render environment variables to the Vercel URL and redeploy the backend so CORS is configured correctly.
+
+
+
+
