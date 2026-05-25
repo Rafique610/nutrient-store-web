@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import Icon from './Icon';
@@ -17,10 +17,9 @@ function StarRating({ rating }) {
 }
 
 export default function ProductCard({ product, rank }) {
-  const { user, addToCart, isInCart, isOwned } = useAuth();
+  const { user, addToCart, isInCart } = useAuth();
   const [adding, setAdding] = useState(false);
   const colors = GENRE_COLORS[product.genre] || ['#4da6ff', '#1a6dcc'];
-  const owned = isOwned(product.id);
   const inCart = isInCart(product.id);
 
   const handleCart = async (e) => {
@@ -33,7 +32,7 @@ export default function ProductCard({ product, rank }) {
   };
 
   return (
-    <div className={`product-card ${owned ? 'product-card-owned' : ''}`}>
+    <div className="product-card">
       {/* Cover area */}
       <Link to={`/product/${product.id}`} className="product-card-cover-link">
         <div className="product-card-cover" style={{
@@ -52,7 +51,6 @@ export default function ProductCard({ product, rank }) {
             {rank && <span className="card-rank">#{rank}</span>}
             {product.isNew && !rank && <span className="card-badge badge-new">NEW</span>}
             {product.isFree && <span className="card-badge badge-free">SAMPLE</span>}
-            {owned && <span className="card-badge badge-owned"><Icon name="check" size={10} /> BOUGHT</span>}
           </div>
 
           {/* Hover overlay */}
@@ -78,11 +76,7 @@ export default function ProductCard({ product, rank }) {
             )}
           </div>
           <div className="product-card-actions">
-            {owned ? (
-              <button className="btn-cart btn-cart-owned" disabled>
-                <Icon name="check" size={14} /> Bought
-              </button>
-            ) : inCart ? (
+            {inCart ? (
               <button className="btn-cart btn-cart-in-cart" disabled>
                 <Icon name="check" size={14} /> In Cart
               </button>

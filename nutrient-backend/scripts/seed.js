@@ -68,7 +68,7 @@ const seed = async () => {
       price: product.price,
       category: product.genre,
       coverImage: product.image,
-      screenshots: [1, 2, 3].map((n) => `/images/screenshots/${product.id}-${n}.jpg`),
+      screenshots: [],
       productFile: "uploads/products/files/nutrient-demo.txt",
       averageRating: product.rating,
       totalReviews: product.reviews,

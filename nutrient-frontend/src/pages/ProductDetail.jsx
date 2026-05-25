@@ -1,4 +1,4 @@
-﻿import { useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useProducts } from '../context/ProductContext';
@@ -34,7 +34,6 @@ export default function ProductDetail() {
   const [reviewText, setReviewText] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
   const [submitted, setSubmitted] = useState(false);
-  const [previewImage, setPreviewImage] = useState(null);
   const [localReviews, setLocalReviews] = useState([]);
   const [actionError, setActionError] = useState('');
 
@@ -94,7 +93,6 @@ export default function ProductDetail() {
     ? (localReviews.reduce((s, r) => s + r.rating, 0) / localReviews.length).toFixed(1)
     : product.rating.toFixed(1);
   const reviewCount = localReviews.length || product.reviews;
-  const screenshotImages = product.screenshots?.length ? product.screenshots : [];
 
   const handleAddToCart = async () => { if (user) await addToCart(product); };
 
@@ -160,16 +158,6 @@ export default function ProductDetail() {
           <div className="gd-section panel">
             <h3>Product Details</h3>
             <p className="gd-description">{product.description}</p>
-            {screenshotImages.length > 0 && (
-              <div className="gd-screenshots">
-                {screenshotImages.map((src, index) => (
-                <button key={src} type="button" className="gd-screenshot" onClick={() => setPreviewImage(src)}>
-                  <img src={src} alt={`${product.title} product preview ${index + 1}`} className="gd-screenshot-img" />
-                  <span className="gd-screenshot-zoom"><Icon name="zoom_in" size={18} /></span>
-                </button>
-                ))}
-              </div>
-            )}
           </div>
 
           {/* Reviews */}
@@ -237,11 +225,7 @@ export default function ProductDetail() {
             </div>
             
             <div className="gd-actions">
-              {owned ? (
-                <button className="btn btn-success w-full" disabled>
-                  <Icon name="shopping_bag" size={18} /> Purchased
-                </button>
-              ) : inCart ? (
+              {inCart ? (
                 <Link to="/cart" className="btn btn-primary w-full" style={{ justifyContent: 'center' }}>
                   <Icon name="shopping_cart" size={18} /> View in Cart
                 </Link>
@@ -292,17 +276,6 @@ export default function ProductDetail() {
           </div>
         </div>
       </div>
-
-      {previewImage && (
-        <div className="gd-preview-overlay" onClick={() => setPreviewImage(null)}>
-          <div className="gd-preview-dialog" onClick={e => e.stopPropagation()}>
-            <button type="button" className="gd-preview-close" onClick={() => setPreviewImage(null)} aria-label="Close preview">
-              <Icon name="close" size={20} />
-            </button>
-            <img src={previewImage} alt={`${product.title} enlarged product preview`} className="gd-preview-img" />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

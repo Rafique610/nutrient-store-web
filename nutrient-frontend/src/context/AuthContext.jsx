@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { authApi, normalizeUser, orderApi, setAuthToken } from '../services/api';
 
 const AuthContext = createContext(null);
@@ -134,7 +134,6 @@ export function AuthProvider({ children }) {
   const addToCart = async (product) => {
     if (!user || !product) return false;
     if (cart.find((item) => item.id === product.id)) return false;
-    if (libraryproducts.some((item) => item.id === product.id)) return false;
 
     try {
       const data = await orderApi.addToCart(product.id);
