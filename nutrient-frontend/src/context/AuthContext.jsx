@@ -11,44 +11,69 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const persistUser = (nextUser) => {
-    if (nextUser) localStorage.setItem('gv_user', JSON.stringify(nextUser));
-    else localStorage.removeItem('gv_user');
+    if (nextUser) {
+      localStorage.setItem('ns_user', JSON.stringify(nextUser));
+      localStorage.setItem('gv_user', JSON.stringify(nextUser));
+    } else {
+      localStorage.removeItem('ns_user');
+      localStorage.removeItem('gv_user');
+    }
   };
 
   const applyCart = (items) => {
     const normalized = items || [];
     setCart(normalized);
+    localStorage.setItem('ns_cart', JSON.stringify(normalized));
     localStorage.setItem('gv_cart', JSON.stringify(normalized));
   };
 
   const applyLibrary = (items) => {
     const normalized = items || [];
     setLibraryproducts(normalized);
+    localStorage.setItem('ns_library', JSON.stringify(normalized.map((product) => product.id)));
     localStorage.setItem('gv_library', JSON.stringify(normalized.map((product) => product.id)));
   };
 
   const loadAccountData = async () => {
-    const [cartData, libraryData, orderData] = await Promise.all([
+    const [cartData, libraryData, orderData] = await Promise.allSettled([
       orderApi.getCart(),
       orderApi.library(),
       orderApi.list(),
     ]);
 
-    applyCart(cartData.items || []);
-    applyLibrary(libraryData.products || []);
-    setOrders(orderData.orders || []);
+    if (cartData.status === 'fulfilled') applyCart(cartData.value.items || []);
+    else applyCart([]);
+
+    if (libraryData.status === 'fulfilled') applyLibrary(libraryData.value.products || []);
+    else applyLibrary([]);
+
+    if (orderData.status === 'fulfilled') setOrders(orderData.value.orders || []);
+    else setOrders([]);
   };
 
   useEffect(() => {
     const restoreSession = async () => {
-      const savedToken = localStorage.getItem('gv_token');
-      const savedUser = localStorage.getItem('gv_user');
+      const savedToken = localStorage.getItem('ns_token') || localStorage.getItem('gv_token');
+      const savedUser = savedToken
+        ? (localStorage.getItem('ns_user') || localStorage.getItem('gv_user'))
+        : null;
 
-      if (savedUser) setUser(JSON.parse(savedUser));
       if (!savedToken) {
+        setAuthToken('');
+        setUser(null);
+        setCart([]);
+        setLibraryproducts([]);
+        setOrders([]);
+        persistUser(null);
+        localStorage.removeItem('ns_cart');
+        localStorage.removeItem('gv_cart');
+        localStorage.removeItem('ns_library');
+        localStorage.removeItem('gv_library');
         setLoading(false);
         return;
       }
+
+      if (savedUser) setUser(JSON.parse(savedUser));
 
       setAuthToken(savedToken);
 
@@ -64,8 +89,10 @@ export function AuthProvider({ children }) {
         setCart([]);
         setLibraryproducts([]);
         setOrders([]);
-        localStorage.removeItem('gv_user');
+        persistUser(null);
+        localStorage.removeItem('ns_cart');
         localStorage.removeItem('gv_cart');
+        localStorage.removeItem('ns_library');
         localStorage.removeItem('gv_library');
       } finally {
         setLoading(false);
@@ -112,7 +139,9 @@ export function AuthProvider({ children }) {
     setLibraryproducts([]);
     setOrders([]);
     persistUser(null);
+    localStorage.removeItem('ns_cart');
     localStorage.removeItem('gv_cart');
+    localStorage.removeItem('ns_library');
     localStorage.removeItem('gv_library');
   };
 

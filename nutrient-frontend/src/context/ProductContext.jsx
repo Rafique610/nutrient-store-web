@@ -18,9 +18,17 @@ export function ProductProvider({ children }) {
       setProducts(data.products || []);
       return data.products || [];
     } catch (err) {
-      setError('');
-      setProducts(mockproducts);
-      return mockproducts;
+      const apiUrl = String(import.meta.env.VITE_API_URL || '');
+      const allowMockFallback = !apiUrl || apiUrl.includes('localhost');
+      if (allowMockFallback) {
+        setError('');
+        setProducts(mockproducts);
+        return mockproducts;
+      }
+
+      setError(err?.message || 'Unable to load products');
+      setProducts([]);
+      return [];
     } finally {
       setLoading(false);
     }

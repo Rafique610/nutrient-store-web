@@ -44,8 +44,10 @@ export default function ProductDetail() {
       setActionError('');
 
       try {
+        const apiUrl = String(import.meta.env.VITE_API_URL || '');
+        const allowMockFallback = !apiUrl || apiUrl.includes('localhost');
         const cached = products.find(g => String(g.id) === String(id))
-          || mockproducts.find(g => String(g.id) === String(id));
+          || (allowMockFallback ? mockproducts.find(g => String(g.id) === String(id)) : null);
         const nextproduct = cached || (await productsApi.get(id)).product;
         let reviewData = { reviews: [] };
 
@@ -58,7 +60,9 @@ export default function ProductDetail() {
         setproduct(nextproduct);
         setLocalReviews(reviewData.reviews || []);
       } catch (err) {
-        const fallback = mockproducts.find(g => String(g.id) === String(id));
+        const apiUrl = String(import.meta.env.VITE_API_URL || '');
+        const allowMockFallback = !apiUrl || apiUrl.includes('localhost');
+        const fallback = allowMockFallback ? mockproducts.find(g => String(g.id) === String(id)) : null;
         if (fallback) {
           setproduct(fallback);
           setLocalReviews([]);
