@@ -1,4 +1,4 @@
-﻿import mongoose from "mongoose";
+import mongoose from "mongoose";
 import Product from "../models/Product.js";
 import Order from "../models/Order.js";
 import User from "../models/User.js";
@@ -66,10 +66,6 @@ export const addToCart = async (req, res, next) => {
 
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    if (user.purchased.some((ownedId) => ownedId.toString() === productId)) {
-      return res.status(409).json({ success: false, message: "Product already exists in your purchased history" });
     }
 
     if (user.cart.some((cartId) => cartId.toString() === productId)) {
@@ -153,18 +149,7 @@ export const checkout = async (req, res, next) => {
     if (!user.cart.length) {
       return res.status(400).json({ success: false, message: "Cart is empty" });
     }
-
-    const ownedIds = new Set(user.purchased.map((id) => id.toString()));
-    const purchasableProducts = user.cart.filter((product) => !ownedIds.has(product._id.toString()));
-
-    if (!purchasableProducts.length) {
-      user.cart = [];
-      await user.save();
-      return res.status(409).json({
-        success: false,
-        message: "All cart products are already purchased",
-      });
-    }
+    const purchasableProducts = user.cart;
 
     const orderProducts = purchasableProducts.map((product) => ({
       product: product._id,

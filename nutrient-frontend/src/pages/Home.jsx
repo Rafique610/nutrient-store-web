@@ -70,16 +70,14 @@ function HeroCarousel({ featuredproducts }) {
                 {product.price === 0 ? <span className="price-free-lg">SAMPLE</span> : <span className="price-lg">${product.price}</span>}
               </div>
               <div className="hero-btns">
-                {owned ? (
-                  <Link to="/library" className="btn btn-success btn-lg"><Icon name="check" size={18} /> Purchased</Link>
-                ) : inCart ? (
+                {inCart ? (
                   <Link to="/cart" className="btn btn-primary btn-lg"><Icon name="shopping_cart" size={18} /> View Cart</Link>
                 ) : (
                   <button className="btn btn-primary btn-lg" onClick={async () => {
                     if (!user) { navigate('/login'); return; }
                     await addToCart(product);
                   }}>
-                    <Icon name="shopping_cart" size={18} /> {product.price === 0 ? 'Get Sample' : 'Add to Cart'}
+                    <Icon name="shopping_cart" size={18} /> {product.price === 0 ? 'Get Sample' : owned ? 'Buy Again' : 'Add to Cart'}
                   </button>
                 )}
                 <Link to={`/product/${product.id}`} className="btn btn-secondary btn-lg">View Details</Link>
