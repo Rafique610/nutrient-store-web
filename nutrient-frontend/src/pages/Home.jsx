@@ -1,9 +1,9 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Icon from '../components/ui/Icon';
 import ProductCard from '../components/ui/ProductCard';
 import { useAuth } from '../context/AuthContext';
-import { useproducts } from '../context/productContext';
+import { useproducts } from '../context/ProductContext';
 import { GENRE_COLORS } from '../data/mockData';
 import './Home.css';
 

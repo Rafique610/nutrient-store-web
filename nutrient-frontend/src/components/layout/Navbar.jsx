@@ -1,7 +1,7 @@
-﻿import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { useproducts } from '../../context/productContext';
+import { useproducts } from '../../context/ProductContext';
 import Icon from '../ui/Icon';
 import './Navbar.css';
 
