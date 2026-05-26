@@ -13,8 +13,13 @@ function MarketingHero() {
         <div className="hero-content">
           <div className="hero-left">
             <span className="hero-kicker">HydraDose Electrolytes</span>
-            <h1 className="hero-title">Clean hydration for training, heat, and travel.</h1>
-            <p className="hero-desc">Zero sugar electrolyte sachets with a modern, premium feel. Built for everyday wellness and high-performance routines.</p>
+            <h1 className="hero-title">Clean hydration, no sugar crash.</h1>
+            <p className="hero-desc">Sugar-free electrolyte sachets for workouts, heat, travel, and everyday wellness.</p>
+            <div className="hero-stats">
+              <div className="hero-stat"><strong>0</strong><span>Sugar</span></div>
+              <div className="hero-stat"><strong>0</strong><span>Calories</span></div>
+              <div className="hero-stat"><strong>0</strong><span>Carbs</span></div>
+            </div>
             <div className="formula-strip">
               <span>Sodium</span>
               <strong>800mg</strong>
@@ -33,7 +38,7 @@ function MarketingHero() {
 
           <div className="hero-right">
             <div className="hero-cover-frame" style={{ background: 'linear-gradient(135deg, rgba(109,91,255,0.80), rgba(34,211,238,0.55))' }}>
-              <Icon name="water_drop" size={120} style={{ color: 'rgba(255,255,255,0.20)' }} />
+              <img className="hero-product-img" src="/images/hero-pack.svg" alt="HydraDose hydration sachets" />
             </div>
           </div>
         </div>
