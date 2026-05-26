@@ -10,6 +10,10 @@
   overflow-y: auto;
 }
 
+.sidebar-backdrop {
+  display: none;
+}
+
 .sidebar.closed {
   width: 0;
   padding: 0;
@@ -69,6 +73,15 @@
 .sidebar-more:hover { color: var(--accent); }
 
 @media (max-width: 768px) {
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    background: rgba(3,5,12,0.55);
+    backdrop-filter: blur(6px);
+  }
+
   .sidebar {
     position: fixed;
     top: var(--navbar-h);

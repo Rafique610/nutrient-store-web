@@ -5,6 +5,7 @@ import { ProductProvider } from './context/ProductContext';
 import Navbar from './components/layout/Navbar';
 import Sidebar from './components/layout/Sidebar';
 import Footer from './components/layout/Footer';
+import CursorGlow from './components/effects/CursorGlow';
 import Home from './pages/Home';
 import Store from './pages/Store';
 import ProductDetail from './pages/ProductDetail';
@@ -34,19 +35,37 @@ function AppLayout() {
   const isAdmin = user?.role === 'admin';
 
   useEffect(() => {
+    let lastIsDesktop = window.innerWidth > 768;
     const handleResize = () => {
-      setSidebarOpen(window.innerWidth > 768);
+      const isDesktop = window.innerWidth > 768;
+      if (isDesktop === lastIsDesktop) return;
+      lastIsDesktop = isDesktop;
+      setSidebarOpen(isDesktop);
     };
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const isMobile = window.innerWidth <= 768;
+    if (sidebarOpen && isMobile) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+    return undefined;
+  }, [sidebarOpen]);
+
   return (
     <div className="app-layout">
+      <CursorGlow />
       <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
       <div className="main-wrapper">
-        <Sidebar open={sidebarOpen} />
+        {sidebarOpen && <div className="sidebar-backdrop" onClick={() => setSidebarOpen(false)} role="button" tabIndex={0} aria-label="Close menu" />}
+        <Sidebar open={sidebarOpen} setSidebarOpen={setSidebarOpen} />
         <div className={`content-area ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
           <Routes>
             <Route path="/" element={isAdmin ? <Navigate to="/admin" replace /> : <Home />} />

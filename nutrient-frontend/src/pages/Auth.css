@@ -16,7 +16,10 @@
 }
 
 .auth-bg-orb {
-  display: none;
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.18;
 }
 
 .auth-bg-orb-1 {
@@ -30,7 +33,7 @@
 .auth-bg-orb-2 {
   width: 400px;
   height: 400px;
-  background: #9b59b6;
+  background: var(--accent-2);
   bottom: -100px;
   right: -80px;
 }
@@ -40,11 +43,11 @@
   z-index: 1;
   width: 100%;
   max-width: 420px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid var(--border);
+  background: rgba(11,18,34,0.78);
+  border: 1px solid rgba(255,255,255,0.10);
   border-radius: 12px;
   padding: 36px;
-  box-shadow: 0 24px 80px rgba(49,75,58,0.16);
+  box-shadow: 0 28px 90px rgba(0,0,0,0.60);
   backdrop-filter: blur(20px);
 }
 
@@ -192,7 +195,7 @@
   transition: all 0.15s;
   font-family: 'Inter', sans-serif;
 }
-.demo-btn:hover { background: rgba(35,201,183,0.14); border-color: var(--border-accent); }
+.demo-btn:hover { background: rgba(109,91,255,0.14); border-color: var(--border-accent); }
 
 .demo-role {
   font-size: 12px;
@@ -234,7 +237,7 @@
   gap: 2px;
 }
 .role-card input { display: none; }
-.role-card.active { background: rgba(35,201,183,0.16); border-color: var(--accent); }
+.role-card.active { background: rgba(109,91,255,0.18); border-color: var(--accent); }
 
 .role-name {
   font-size: 13px;

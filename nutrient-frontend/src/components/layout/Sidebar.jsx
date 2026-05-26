@@ -1,4 +1,4 @@
-﻿import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Icon from '../ui/Icon';
 import './Sidebar.css';
@@ -11,11 +11,16 @@ const GENRES = [
   { name: 'Performance' },
 ];
 
-export default function Sidebar({ open }) {
+export default function Sidebar({ open, setSidebarOpen }) {
   const location = useLocation();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
   const isDev = user?.role === 'developer';
+
+  const closeIfMobile = () => {
+    if (!setSidebarOpen) return;
+    if (window.innerWidth <= 768) setSidebarOpen(false);
+  };
 
   const isActive = (path) => {
     const [pathname, search] = path.split('?');
@@ -31,7 +36,7 @@ export default function Sidebar({ open }) {
   };
 
   const NavItem = ({ to, icon, label }) => (
-    <Link to={to} className={`sidebar-item ${isActive(to) ? 'active' : ''}`}>
+    <Link to={to} className={`sidebar-item ${isActive(to) ? 'active' : ''}`} onClick={closeIfMobile}>
       <Icon name={icon} className="sidebar-item-icon" size={18} />
       <span>{label}</span>
     </Link>
@@ -77,12 +82,12 @@ export default function Sidebar({ open }) {
       <div className="sidebar-section">
         <div className="sidebar-heading">USE CASES</div>
         {GENRES.map(g => (
-          <Link key={g.name} to={`/store?genre=${g.name}`} className={`sidebar-item ${location.search.includes(g.name) ? 'active' : ''}`}>
+          <Link key={g.name} to={`/store?genre=${g.name}`} className={`sidebar-item ${location.search.includes(g.name) ? 'active' : ''}`} onClick={closeIfMobile}>
             <Icon name="water_drop" size={16} style={{ opacity: 0.6 }} />
             <span>{g.name}</span>
           </Link>
         ))}
-        <Link to="/store?filter=all-genres" className="sidebar-item sidebar-more">
+        <Link to="/store?filter=all-genres" className="sidebar-item sidebar-more" onClick={closeIfMobile}>
           <span>Browse All Uses <Icon name="arrow_forward" size={14} /></span>
         </Link>
       </div>
