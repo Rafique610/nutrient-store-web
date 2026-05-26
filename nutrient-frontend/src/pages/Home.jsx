@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import Icon from '../components/ui/Icon';
+import { useproducts } from '../context/ProductContext';
 import { GENRE_COLORS } from '../data/mockData';
 import './Home.css';
 
-function MarketingHero() {
+function MarketingHero({ heroImage }) {
   return (
     <div className="hero-carousel">
       <div className="hero-slide">
@@ -38,7 +39,11 @@ function MarketingHero() {
 
           <div className="hero-right">
             <div className="hero-cover-frame" style={{ background: 'linear-gradient(135deg, rgba(109,91,255,0.80), rgba(34,211,238,0.55))' }}>
-              <img className="hero-product-img" src="/images/hero-pack.svg" alt="HydraDose hydration sachets" />
+              {heroImage ? (
+                <img className="hero-cover-img" src={heroImage} alt="HydraDose hydration sachets" />
+              ) : (
+                <Icon name="water_drop" size={120} style={{ color: 'rgba(255,255,255,0.20)' }} />
+              )}
             </div>
           </div>
         </div>
@@ -57,9 +62,14 @@ function SectionHeader({ title, iconName, linkTo, linkText }) {
 }
 
 export default function Home() {
+  const { products, loading } = useproducts();
+  const heroImage = products.find(p => p.isFeatured && p.image)?.image || products.find(p => p.image)?.image || '';
+
+  if (loading) return <div className="loading-screen"><div className="loader" /></div>;
+
   return (
     <div className="home-page">
-      <MarketingHero />
+      <MarketingHero heroImage={heroImage} />
 
       <div className="home-sections page-content" id="why">
         <section className="home-intro">
