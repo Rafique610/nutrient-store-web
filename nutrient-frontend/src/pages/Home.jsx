@@ -123,10 +123,16 @@ function SectionHeader({ title, iconName, linkTo, linkText }) {
 
 export default function Home() {
   const { products, loading, error } = useproducts();
+  const [mobileTab, setMobileTab] = useState('All Products');
   const featuredproducts = products.filter(g => g.isFeatured).length > 0 ? products.filter(g => g.isFeatured) : products.slice(0, 5);
   const newproducts = products.filter(g => g.isNew).slice(0, 4);
   const topproducts = [...products].sort((a, b) => b.downloads - a.downloads).slice(0, 4);
   const dailyHydration = products.filter(g => ['Wellness', 'Heat', 'Travel', 'Exercise'].includes(g.genre)).slice(0, 4);
+  const previewProduct = featuredproducts[0] || products[0];
+  const mobileTabs = ['All Products', 'Exercise', 'Heat', 'Wellness', 'Travel'];
+  const mobileProducts = mobileTab === 'All Products'
+    ? products.slice(0, 6)
+    : products.filter(product => product.genre === mobileTab).slice(0, 6);
 
   if (loading) {
     return <div className="loading-screen"><div className="loader" /></div>;
@@ -135,6 +141,55 @@ export default function Home() {
   return (
     <div className="home-page">
       {error && <div className="auth-error" style={{ margin: 24 }}>{error}</div>}
+      {previewProduct && (
+        <section className="mobile-hydrict-home">
+          <div className="mobile-hero-card">
+            <span className="mobile-hero-eyebrow">HydraDose Electrolytes</span>
+            <h1>Clean hydration in every sachet.</h1>
+            <p>Zero sugar electrolyte drink mix for training, heat, travel, and everyday wellness.</p>
+
+            <div className="mobile-preview">
+              <img src={previewProduct.image} alt={previewProduct.title} />
+              <div className="mobile-preview-copy">
+                <span>{previewProduct.genre}</span>
+                <strong>{previewProduct.title}</strong>
+                <small>{previewProduct.tags.slice(0, 2).join(' • ')}</small>
+              </div>
+            </div>
+
+            <div className="mobile-formula-row">
+              <div><strong>0g</strong><span>Sugar</span></div>
+              <div><strong>800mg</strong><span>Sodium</span></div>
+              <div><strong>20</strong><span>Sachets</span></div>
+            </div>
+
+            <Link to="/store" className="mobile-shop-btn">Shop Now</Link>
+          </div>
+
+          <div className="mobile-product-tabs" aria-label="Product categories">
+            {mobileTabs.map(tab => (
+              <button
+                key={tab}
+                className={mobileTab === tab ? 'active' : ''}
+                onClick={() => setMobileTab(tab)}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <div className="mobile-product-strip">
+            {mobileProducts.map(product => (
+              <Link to={`/product/${product.id}`} className="mobile-sachet-card" key={product.id}>
+                <img src={product.image} alt={product.title} />
+                <span>{product.genre}</span>
+                <strong>{product.title}</strong>
+                <small>${product.price.toFixed(2)}</small>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
       <HeroCarousel featuredproducts={featuredproducts} />
 
       <div className="home-sections page-content">

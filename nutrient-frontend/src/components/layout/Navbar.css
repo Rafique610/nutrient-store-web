@@ -317,7 +317,7 @@
 
 @media (max-width: 480px) {
   .navbar-search { display: none; }
-  .auth-btns .btn:first-child { display: none; }
+  .auth-btns { display: none; }
   .navbar-inner { gap: 8px; }
   .brand-text { font-size: 0.95rem; }
 }

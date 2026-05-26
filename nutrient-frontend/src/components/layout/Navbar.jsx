@@ -124,10 +124,10 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
 
         {/* Right: Cart + User */}
         <div className="navbar-right">
-          {user && !isAdmin && (
+          {!isAdmin && (
             <Link to="/cart" className="cart-btn">
               <Icon name="shopping_cart" size={18} />
-              {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              {user && cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
             </Link>
           )}
 
