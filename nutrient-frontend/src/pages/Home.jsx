@@ -1,140 +1,211 @@
 import { Link } from 'react-router-dom';
-import Icon from '../components/ui/Icon';
+import { FiArrowRight, FiStar, FiZap, FiDroplet, FiShield, FiTrendingUp, FiMoon, FiNavigation2, FiActivity } from 'react-icons/fi';
 import { useproducts } from '../context/ProductContext';
 import { GENRE_COLORS } from '../data/mockData';
 import './Home.css';
 
-function MarketingHero({ heroImage }) {
-  return (
-    <div className="hero-carousel">
-      <div className="hero-slide">
-        <div className="hero-grid-texture" />
-        <div className="hero-glow" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }} />
+const USE_CASES = [
+  { name: 'Exercise', icon: FiActivity, color: '#23c9b7' },
+  { name: 'Heat', icon: FiZap, color: '#f97316' },
+  { name: 'Travel', icon: FiNavigation2, color: '#38bdf8' },
+  { name: 'Wellness', icon: FiDroplet, color: '#22c55e' },
+  { name: 'Recovery', icon: FiShield, color: '#a78bfa' },
+  { name: 'Sleep', icon: FiMoon, color: '#818cf8' },
+  { name: 'Performance', icon: FiTrendingUp, color: '#06b6d4' },
+];
 
-        <div className="hero-content">
-          <div className="hero-left">
-            <span className="hero-kicker">HydraDose Electrolytes</span>
-            <h1 className="hero-title">Clean hydration, no sugar crash.</h1>
-            <p className="hero-desc">Sugar-free electrolyte sachets for workouts, heat, travel, and everyday wellness.</p>
-            <div className="hero-stats">
-              <div className="hero-stat"><strong>0</strong><span>Sugar</span></div>
-              <div className="hero-stat"><strong>0</strong><span>Calories</span></div>
-              <div className="hero-stat"><strong>0</strong><span>Carbs</span></div>
-            </div>
-            <div className="formula-strip">
-              <span>Sodium</span>
-              <strong>800mg</strong>
-              <span>Potassium</span>
-              <strong>200mg</strong>
-              <span>Sugar</span>
-              <strong>0g</strong>
-            </div>
-            <div className="hero-actions">
-              <div className="hero-btns">
-                <Link to="/store" className="btn btn-primary btn-lg"><Icon name="shopping_cart" size={18} /> Shop Now</Link>
-                <a href="#why" className="btn btn-secondary btn-lg">How it works</a>
-              </div>
-            </div>
-          </div>
+const BENEFITS = [
+  { icon: '0g', label: 'Sugar', sub: 'Clean energy' },
+  { icon: '0', label: 'Calories', sub: 'Zero guilt' },
+  { icon: '4x', label: 'Minerals', sub: 'Essential blend' },
+];
 
-          <div className="hero-right">
-            <div className="hero-cover-frame" style={{ background: 'linear-gradient(135deg, rgba(109,91,255,0.80), rgba(34,211,238,0.55))' }}>
-              {heroImage ? (
-                <img className="hero-cover-img" src={heroImage} alt="HydraDose hydration sachets" />
-              ) : (
-                <Icon name="water_drop" size={120} style={{ color: 'rgba(255,255,255,0.20)' }} />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SectionHeader({ title, iconName, linkTo, linkText }) {
-  return (
-    <div className="section-header">
-      <h2 className="section-title"><Icon name={iconName} size={22} /> {title}</h2>
-      {linkTo && <Link to={linkTo} className="section-more">{linkText} <Icon name="arrow_forward" size={14} /></Link>}
-    </div>
-  );
-}
+const MINERALS = [
+  { name: 'Sodium', amount: '800mg', desc: 'Fluid balance' },
+  { name: 'Potassium', amount: '200mg', desc: 'Heart support' },
+  { name: 'Magnesium', amount: '100mg', desc: 'Muscle recovery' },
+  { name: 'Zinc', amount: '10mg', desc: 'Daily immunity' },
+];
 
 export default function Home() {
   const { products, loading } = useproducts();
-  const heroImage = products.find(p => p.isFeatured && p.image)?.image || products.find(p => p.image)?.image || '';
+
+  const heroProduct = products.find(p => p.isFeatured && p.image) || products.find(p => p.image);
+  const featuredProducts = products.filter(p => p.isFeatured).slice(0, 4);
 
   if (loading) return <div className="loading-screen"><div className="loader" /></div>;
 
   return (
-    <div className="home-page">
-      <MarketingHero heroImage={heroImage} />
+    <div className="home-v2">
 
-      <div className="home-sections page-content" id="why">
-        <section className="home-intro">
-          <div>
-            <span className="intro-eyebrow">Hydration, redesigned</span>
-            <h2>Zero-sugar electrolyte sachets for heat, training, travel, and daily wellness.</h2>
-          </div>
-          <p>Built around essential minerals and a clean formula so customers understand the purpose instantly. No clutter on the home page — products stay in the Store tab.</p>
-        </section>
+      {/* ── HERO ── */}
+      <section className="hero-v2">
+        <div className="hero-v2-bg">
+          <div className="hero-v2-orb hero-orb-1" />
+          <div className="hero-v2-orb hero-orb-2" />
+          <div className="hero-grid-lines" />
+        </div>
 
-        <section className="formula-panel">
-          <div className="formula-copy">
-            <span className="intro-eyebrow">Core formula</span>
-            <h2>Replenish what sweat takes out.</h2>
-            <p>Designed around sodium, potassium, magnesium, and zinc so customers immediately understand why the sachets exist.</p>
+        <div className="hero-v2-content">
+          <div className="hero-v2-eyebrow">
+            <span className="eyebrow-dot" />
+            Clean Hydration
           </div>
-          <div className="formula-grid">
-            <div><strong>Sodium</strong><span>Fluid balance after sweat.</span></div>
-            <div><strong>Magnesium</strong><span>Muscle function and recovery.</span></div>
-            <div><strong>Potassium</strong><span>Nerve and heart support.</span></div>
-            <div><strong>Zinc</strong><span>Daily immune support.</span></div>
-          </div>
-        </section>
 
-        <section className="mb-6">
-          <SectionHeader title="Why HydraDose" iconName="bolt" />
-          <div className="grid-3 home-benefits">
-            <div className="panel">
-              <div className="home-benefit-title">Zero sugar</div>
-              <p className="text-muted">Hydration support without sweeteners that spike and crash. Clean taste, fast mix.</p>
+          <h1 className="hero-v2-title">
+            Hydrate<br />
+            <span className="hero-title-accent">without</span><br />
+            the sugar.
+          </h1>
+
+          <p className="hero-v2-desc">
+            Zero-sugar electrolyte sachets built around sodium, potassium, magnesium and zinc. For workouts, heat, travel and everyday life.
+          </p>
+
+          {/* Stats pills */}
+          <div className="hero-v2-pills">
+            {BENEFITS.map(b => (
+              <div key={b.label} className="hero-pill">
+                <span className="hero-pill-value">{b.icon}</span>
+                <span className="hero-pill-label">{b.label}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="hero-v2-actions">
+            <Link to="/store" className="btn btn-primary btn-lg hero-cta-btn">
+              Shop Now <FiArrowRight size={16} />
+            </Link>
+            <Link to="/store?filter=free" className="btn btn-secondary hero-sample-btn">
+              Free Samples
+            </Link>
+          </div>
+        </div>
+
+        {/* Product image */}
+        {heroProduct && (
+          <div className="hero-v2-visual">
+            <div className="hero-product-card">
+              <img src={heroProduct.image} alt={heroProduct.title} className="hero-product-img-v2" />
+              <div className="hero-product-badge">
+                <FiStar size={10} fill="currentColor" />
+                {heroProduct.rating.toFixed(1)}
+              </div>
             </div>
-            <div className="panel">
-              <div className="home-benefit-title">Mineral-first</div>
-              <p className="text-muted">Designed around sodium, potassium, magnesium, and zinc for real-world use cases.</p>
-            </div>
-            <div className="panel">
-              <div className="home-benefit-title">Travel-ready</div>
-              <p className="text-muted">Single-serve sachets you can carry anywhere — gym bag, office, or flights.</p>
-            </div>
+          </div>
+        )}
+      </section>
+
+      {/* ── FORMULA STRIP ── */}
+      <section className="formula-strip-v2">
+        {MINERALS.map((m, i) => (
+          <div key={m.name} className="formula-item">
+            <span className="formula-amount">{m.amount}</span>
+            <span className="formula-name">{m.name}</span>
+            <span className="formula-desc">{m.desc}</span>
+            {i < MINERALS.length - 1 && <div className="formula-divider" />}
+          </div>
+        ))}
+      </section>
+
+      {/* ── USE CASES ── */}
+      <section className="use-cases-section">
+        <div className="section-label">Shop by use case</div>
+        <div className="use-cases-scroll">
+          {USE_CASES.map(({ name, icon: Icon, color }) => (
+            <Link
+              key={name}
+              to={`/store?genre=${name}`}
+              className="use-case-chip"
+              style={{ '--chip-color': color }}
+            >
+              <span className="chip-icon-wrap">
+                <Icon size={16} color={color} />
+              </span>
+              {name}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── FEATURED PRODUCTS ── */}
+      {featuredProducts.length > 0 && (
+        <section className="featured-section">
+          <div className="featured-header">
+            <h2 className="featured-title">Best Sellers</h2>
+            <Link to="/store?filter=top" className="featured-more">
+              See all <FiArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="featured-scroll">
+            {featuredProducts.map(product => {
+              const colors = GENRE_COLORS[product.genre] || ['#23c9b7', '#0d9488'];
+              return (
+                <Link key={product.id} to={`/product/${product.id}`} className="feat-card">
+                  <div className="feat-card-img" style={{ background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})` }}>
+                    {product.image
+                      ? <img src={product.image} alt={product.title} />
+                      : <span className="feat-initial">{product.genre[0]}</span>
+                    }
+                    {product.isNew && <span className="feat-new">NEW</span>}
+                  </div>
+                  <div className="feat-card-info">
+                    <span className="feat-genre">{product.genre}</span>
+                    <span className="feat-name">{product.title}</span>
+                    <div className="feat-bottom">
+                      <span className="feat-price">
+                        {product.price === 0 ? 'SAMPLE' : `$${product.price.toFixed(2)}`}
+                      </span>
+                      <span className="feat-rating">
+                        <FiStar size={11} fill="currentColor" style={{ color: '#fbbf24' }} />
+                        {product.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
+      )}
 
-        <section className="mb-6 panel home-cta">
-          <div>
-            <div className="home-cta-title">Ready to pick your pack?</div>
-            <p className="text-muted">Browse all sachets, filter by use case, and reorder anytime.</p>
+      {/* ── WHY HYDRADOSE ── */}
+      <section className="why-section">
+        <div className="why-inner">
+          <div className="section-label">Why HydraDose</div>
+          <h2 className="why-title">Replenish what<br />sweat takes out.</h2>
+
+          <div className="why-grid">
+            {[
+              { icon: FiZap, title: 'Zero sugar', body: 'No spike, no crash. Clean hydration that tastes good.' },
+              { icon: FiDroplet, title: 'Mineral-first', body: 'Built around sodium, potassium, magnesium, zinc.' },
+              { icon: FiNavigation2, title: 'Travel-ready', body: 'Single-serve sachets. Gym bag, carry-on, office drawer.' },
+            ].map(({ icon: Icon, title, body }) => (
+              <div key={title} className="why-card">
+                <div className="why-card-icon">
+                  <Icon size={20} color="var(--accent)" />
+                </div>
+                <h3 className="why-card-title">{title}</h3>
+                <p className="why-card-body">{body}</p>
+              </div>
+            ))}
           </div>
-          <div className="home-cta-actions">
+        </div>
+      </section>
+
+      {/* ── BOTTOM CTA ── */}
+      <section className="bottom-cta">
+        <div className="bottom-cta-inner">
+          <h2 className="bottom-cta-title">Ready to hydrate smarter?</h2>
+          <p className="bottom-cta-sub">Browse all sachets and find your pack.</p>
+          <div className="bottom-cta-btns">
             <Link to="/store" className="btn btn-primary btn-lg">Browse Store</Link>
             <Link to="/store?filter=top" className="btn btn-secondary btn-lg">Best Sellers</Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section>
-          <SectionHeader title="Shop by Use Case" iconName="water_drop" />
-          <div className="genre-grid">
-            {Object.entries(GENRE_COLORS).map(([genre, colors]) => (
-              <Link key={genre} to={`/store?genre=${genre}`} className="genre-card" style={{ background: `linear-gradient(135deg, ${colors[0]}22, ${colors[1]}12)`, borderColor: `${colors[0]}55` }}>
-                <div className="genre-card-icon" style={{ color: colors[0] }}>{genre[0]}</div>
-                <span>{genre}</span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </div>
     </div>
   );
 }
