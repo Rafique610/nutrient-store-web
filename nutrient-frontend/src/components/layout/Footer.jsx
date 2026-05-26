@@ -7,9 +7,9 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner">
         <div className="footer-brand">
-          <Icon name="local_florist" className="footer-brand-icon" />
-          <span className="footer-brand-name">NutriFactor</span>
-          <p className="footer-tagline">Daily wellness, naturally presented.</p>
+          <Icon name="water_drop" className="footer-brand-icon" />
+          <span className="footer-brand-name">HydraDose</span>
+          <p className="footer-tagline">Zero-sugar electrolyte sachets for everyday hydration.</p>
           <div className="footer-socials">
             <a href="#" aria-label="GitHub"><Icon name="code" size={16} /></a>
             <a href="#" aria-label="Twitter"><Icon name="tag" size={16} /></a>
@@ -20,9 +20,9 @@ export default function Footer() {
 
         <div className="footer-links-group">
           <h4>Store</h4>
-          <Link to="/store">Browse Products</Link>
-          <Link to="/store?filter=new">New Formulas</Link>
-          <Link to="/store?filter=top">Top Sellers</Link>
+          <Link to="/store">Browse Sachets</Link>
+          <Link to="/store?filter=new">New Sachets</Link>
+          <Link to="/store?filter=top">Best Sellers</Link>
           <Link to="/store?filter=free">Samples</Link>
         </div>
 
@@ -44,7 +44,7 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} NutriFactor. All rights reserved. Built for educational purposes.</p>
+        <p>&copy; {new Date().getFullYear()} HydraDose. All rights reserved. Built for educational purposes.</p>
         <p className="footer-bottom-links">
           <Link to="#">Privacy</Link>
           <Link to="#">Terms</Link>

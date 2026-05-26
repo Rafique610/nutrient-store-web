@@ -19,7 +19,7 @@ function StarRating({ rating }) {
 export default function ProductCard({ product, rank }) {
   const { user, addToCart, isInCart } = useAuth();
   const [adding, setAdding] = useState(false);
-  const colors = GENRE_COLORS[product.genre] || ['#4da6ff', '#1a6dcc'];
+  const colors = GENRE_COLORS[product.genre] || ['#23c9b7', '#0d9488'];
   const inCart = isInCart(product.id);
 
   const handleCart = async (e) => {
@@ -55,9 +55,9 @@ export default function ProductCard({ product, rank }) {
 
           {/* Hover overlay */}
           <div className="card-hover-overlay">
-            <Link to={`/product/${product.id}`} className="btn btn-secondary btn-sm">
+            <span className="btn btn-secondary btn-sm">
               <Icon name="visibility" size={14} /> View
-            </Link>
+            </span>
           </div>
         </div>
       </Link>

@@ -30,8 +30,8 @@ export default function Register() {
       <div className="auth-bg"><div className="auth-bg-orb auth-bg-orb-1" /><div className="auth-bg-orb auth-bg-orb-2" /></div>
       <div className="auth-card auth-card-wide">
         <div className="auth-logo">
-          <Icon name="local_florist" className="auth-logo-icon" />
-          <h1>NutriFactor</h1>
+          <Icon name="water_drop" className="auth-logo-icon" />
+          <h1>HydraDose</h1>
           <p>Create your account</p>
         </div>
         {error && <div className="auth-error"><Icon name="error" size={16} /> {error}</div>}
@@ -73,7 +73,7 @@ export default function Register() {
             <label>Account Type</label>
             <div className="role-cards">
               {[
-                { value: 'customer', label: 'Customer', desc: 'Browse and purchase supplements' },
+                { value: 'customer', label: 'Customer', desc: 'Browse and purchase sachets' },
                 { value: 'developer', label: 'Seller', desc: 'Publish and manage products' },
               ].map(r => (
                 <label key={r.value} className={`role-card ${form.role === r.value ? 'active' : ''}`}>

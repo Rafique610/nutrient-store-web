@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProducts } from '../context/ProductContext';
@@ -43,7 +43,7 @@ export default function SellerHub() {
       formData.append('title', form.title);
       formData.append('category', form.genre);
       formData.append('price', parseFloat(form.price) || 0);
-      formData.append('description', form.description || `${form.title} is now available on NutriFactor.`);
+      formData.append('description', form.description || `${form.title} is now available on HydraDose.`);
       formData.append('tags', form.tags);
       formData.append('status', 'published');
       if (coverImageFile) formData.append('coverImage', coverImageFile);
@@ -91,8 +91,8 @@ export default function SellerHub() {
       {submitted && <div className="dev-success-banner"><Icon name="check" size={16} /> Product published successfully! It's now live in the store.</div>}
       {error && <div className="auth-error" style={{ marginBottom: 16 }}>{error}</div>}
       <div className="dev-stats-grid">
-        <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: 'var(--accent)', background: 'rgba(47,143,91,0.12)' }}><Icon name="inventory_2" size={20} /></div><div><div className="dev-stat-value">{myProducts.length}</div><div className="dev-stat-label">Published Products</div></div></div>
-        <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: 'var(--green)', background: 'rgba(47,143,91,0.12)' }}><Icon name="shopping_bag" size={20} /></div><div><div className="dev-stat-value">{totalDownloads.toLocaleString()}</div><div className="dev-stat-label">Total Orders</div></div></div>
+        <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: 'var(--accent)', background: 'rgba(35,201,183,0.14)' }}><Icon name="inventory_2" size={20} /></div><div><div className="dev-stat-value">{myProducts.length}</div><div className="dev-stat-label">Published Sachets</div></div></div>
+        <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: 'var(--green)', background: 'rgba(35,201,183,0.14)' }}><Icon name="shopping_bag" size={20} /></div><div><div className="dev-stat-value">{totalDownloads.toLocaleString()}</div><div className="dev-stat-label">Total Orders</div></div></div>
         <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: '#9b59b6', background: 'rgba(155,89,182,0.12)' }}><Icon name="attach_money" size={20} /></div><div><div className="dev-stat-value">${Math.round(totalRevenue).toLocaleString()}</div><div className="dev-stat-label">Est. Revenue</div></div></div>
         <div className="dev-stat-card panel"><div className="dev-stat-icon" style={{ color: '#f0a940', background: 'rgba(240,169,64,0.12)' }}><Icon name="star" size={20} /></div><div><div className="dev-stat-value">{avgRating}</div><div className="dev-stat-label">Avg. Rating</div></div></div>
       </div>
@@ -100,11 +100,11 @@ export default function SellerHub() {
       {loading ? (
         <div className="loading-screen"><div className="loader" /></div>
       ) : myProducts.length === 0 ? (
-        <div className="dev-empty panel"><Icon name="inventory_2" size={50} style={{ opacity: 0.3 }} /><h3>No products published yet</h3><p>Start building your catalog by publishing your first supplement.</p><button className="btn btn-primary" onClick={() => setShowUpload(true)}><Icon name="upload" size={16} /> Publish First Product</button></div>
+        <div className="dev-empty panel"><Icon name="inventory_2" size={50} style={{ opacity: 0.3 }} /><h3>No sachets published yet</h3><p>Start building your catalog by publishing your first hydration sachet.</p><button className="btn btn-primary" onClick={() => setShowUpload(true)}><Icon name="upload" size={16} /> Publish First Sachet</button></div>
       ) : (
         <div className="dev-products-grid">
           {myProducts.map(product => {
-            const colors = GENRE_COLORS[product.genre] || ['#4da6ff','#1a6dcc'];
+            const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
             return (
               <div key={product.id} className="dev-product-card panel">
                 <div className="dev-product-cover" style={{ background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})` }}>
@@ -132,8 +132,8 @@ export default function SellerHub() {
             <div className="modal-header"><h3><Icon name="upload" size={18} /> Publish New Product</h3><button className="btn btn-icon btn-secondary" onClick={() => setShowUpload(false)}><Icon name="close" size={18} /></button></div>
             <form onSubmit={handleSubmit}>
               <div className="modal-body">
-                <div className="form-group"><label className="form-label">Product Title *</label><input className="form-control" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} placeholder="Enter supplement name" required /></div>
-                <div className="form-row"><div className="form-group"><label className="form-label">Health Goal *</label><select className="form-control" value={form.genre} onChange={e => setForm(p => ({ ...p, genre: e.target.value }))}>{GENRES.map(g => <option key={g} value={g}>{g}</option>)}</select></div><div className="form-group"><label className="form-label">Price ($) *</label><input className="form-control" type="number" min="0" step="0.01" value={form.price} onChange={e => setForm(p => ({ ...p, price: e.target.value }))} placeholder="0 = Sample" required /></div></div>
+                <div className="form-group"><label className="form-label">Sachet Title *</label><input className="form-control" value={form.title} onChange={e => setForm(p => ({ ...p, title: e.target.value }))} placeholder="Enter sachet name" required /></div>
+                <div className="form-row"><div className="form-group"><label className="form-label">Use Case *</label><select className="form-control" value={form.genre} onChange={e => setForm(p => ({ ...p, genre: e.target.value }))}>{GENRES.map(g => <option key={g} value={g}>{g}</option>)}</select></div><div className="form-group"><label className="form-label">Price ($) *</label><input className="form-control" type="number" min="0" step="0.01" value={form.price} onChange={e => setForm(p => ({ ...p, price: e.target.value }))} placeholder="0 = Sample" required /></div></div>
                 <div className="form-group"><label className="form-label">Description</label><textarea className="form-control" rows={3} value={form.description} onChange={e => setForm(p => ({ ...p, description: e.target.value }))} placeholder="Describe product benefits and usage..." /></div>
                 <div className="form-group"><label className="form-label">Tags (comma-separated)</label><input className="form-control" value={form.tags} onChange={e => setForm(p => ({ ...p, tags: e.target.value }))} placeholder="Vitamin C, Immunity, Daily Care..." /></div>
                 <div className="form-group">

@@ -99,11 +99,11 @@ export default function Store() {
     return products;
   }, [catalog, search, selectedGenre, sort, priceRange, showFreeOnly, filter]);
 
-  const pageTitle = filter === 'new' ? 'New Formulas'
-    : filter === 'top' ? 'Top Sellers'
+  const pageTitle = filter === 'new' ? 'New Sachets'
+    : filter === 'top' ? 'Best Sellers'
     : filter === 'free' ? 'Samples'
-    : selectedGenre ? `${selectedGenre} Products`
-    : 'Browse Supplements';
+    : selectedGenre ? `${selectedGenre} Sachets`
+    : 'Browse Sachets';
 
   const activeFiltersCount = [
     search, selectedGenre, showFreeOnly,
@@ -124,14 +124,14 @@ export default function Store() {
       <div className="store-topbar">
         <div className="store-topbar-left">
           <h1 className="store-title">{pageTitle}</h1>
-          <span className="store-count">{filtered.length} products</span>
+          <span className="store-count">{filtered.length} sachets</span>
         </div>
         <div className="store-topbar-right">
           <div className="store-search-wrap">
             <FiSearch className="store-search-icon" />
             <input
               className="store-search"
-              placeholder="Search supplements..."
+              placeholder="Search sachets..."
               value={search}
               onChange={e => setSearch(e.target.value)}
             />
@@ -164,7 +164,7 @@ export default function Store() {
 
           {/* Genres */}
           <div className="filter-section">
-            <div className="filter-label">Health Goal</div>
+            <div className="filter-label">Use Case</div>
             <button
               className={`genre-pill ${!selectedGenre ? 'active' : ''}`}
               onClick={() => handleGenreChange('')}
@@ -208,8 +208,8 @@ export default function Store() {
           {/* Quick filters */}
           <div className="filter-section">
             <div className="filter-label">Quick Filters</div>
-            <button className={`quick-filter ${filter === 'new' ? 'active' : ''}`} onClick={() => navigate('/store?filter=new')}>New Formulas</button>
-            <button className={`quick-filter ${filter === 'top' ? 'active' : ''}`} onClick={() => navigate('/store?filter=top')}>Top Sellers</button>
+            <button className={`quick-filter ${filter === 'new' ? 'active' : ''}`} onClick={() => navigate('/store?filter=new')}>New Sachets</button>
+            <button className={`quick-filter ${filter === 'top' ? 'active' : ''}`} onClick={() => navigate('/store?filter=top')}>Best Sellers</button>
             <button className={`quick-filter ${filter === 'free' ? 'active' : ''}`} onClick={() => navigate('/store?filter=free')}>Samples</button>
           </div>
         </aside>
@@ -220,13 +220,13 @@ export default function Store() {
             <div className="loading-screen"><div className="loader" /></div>
           ) : error ? (
             <div className="store-empty">
-              <h3>Unable to load products</h3>
+              <h3>Unable to load sachets</h3>
               <p>{error}</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="store-empty">
               <span className="store-empty-icon">🔍</span>
-              <h3>No supplements found</h3>
+              <h3>No sachets found</h3>
               <p>Try adjusting your filters or search query.</p>
               <button className="btn btn-primary" onClick={clearFilters}>Clear Filters</button>
             </div>
@@ -242,5 +242,3 @@ export default function Store() {
     </div>
   );
 }
-
-

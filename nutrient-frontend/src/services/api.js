@@ -98,8 +98,8 @@ export function normalizeProduct(product) {
     image,
     coverImage: image,
     screenshots,
-    developer: product.brandName || product.developer || product.developerName || 'NutriFactor Wellness Lab',
-    developerName: product.brandName || product.developer || product.developerName || 'NutriFactor Wellness Lab',
+    developer: product.brandName || product.developer || product.developerName || 'HydraDose Labs',
+    developerName: product.brandName || product.developer || product.developerName || 'HydraDose Labs',
     developerId: product.seller || product.developerId,
     price,
     rating,
@@ -120,7 +120,7 @@ export function normalizeUser(user) {
   if (!user) return null;
 
   const id = String(user.id || user._id);
-  const name = user.name || user.profile?.fullName || user.username || 'NutriFactor User';
+  const name = user.name || user.profile?.fullName || user.username || 'HydraDose User';
 
   return {
     ...user,
@@ -145,7 +145,7 @@ export function normalizeReview(review) {
     id: String(review.id || review._id),
     productId: String(review.product || review.productId || review.product),
     userId: String(review.userId || review.user),
-    userName: review.userName || 'NutriFactor User',
+    userName: review.userName || 'HydraDose User',
     rating: Number(review.rating || 0),
     text: review.text || review.comment || '',
     comment: review.comment || review.text || '',
@@ -172,7 +172,7 @@ export const productsApi = {
   reviews: (id) => request(`/products/${id}/reviews`).then((data) => ({
     reviews: (data?.reviews || []).map(normalizeReview),
   })),
-  download: async (id, filename = 'nutrifactor-order') => {
+  download: async (id, filename = 'hydration-order') => {
     const response = await fetch(`${API_BASE_URL}/products/${id}/download`, {
       headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
     });
@@ -182,10 +182,10 @@ export const productsApi = {
       if (response.status === 404) {
         const productName = filename.replace(/\.[^.]+$/, '').replace(/-/g, ' ');
         const dummyContent = [
-          `NutriFactor - ${productName}`,
+          `HydraDose - ${productName}`,
           '='.repeat(40),
           '',
-          'Thank you for shopping with NutriFactor!',
+          'Thank you for shopping with HydraDose!',
           '',
           `Product: ${productName}`,
           `Generated: ${new Date().toLocaleString()}`,
@@ -193,8 +193,8 @@ export const productsApi = {
           'This is a demo receipt. A real store would generate',
           'order details and fulfillment information here.',
           '',
-          'Thank you for choosing daily wellness.',
-          '- The NutriFactor Team',
+          'Thank you for choosing clean daily hydration.',
+          '- The HydraDose Team',
         ].join('\n');
         const blob = new Blob([dummyContent], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);

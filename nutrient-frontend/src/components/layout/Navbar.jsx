@@ -62,8 +62,8 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
             <Icon name={sidebarOpen ? 'close' : 'menu'} size={20} />
           </button>
           <Link to={isAdmin ? '/admin' : '/'} className="navbar-brand">
-            <Icon name="local_florist" className="brand-icon" />
-            <span className="brand-text">NutriFactor</span>
+            <Icon name="water_drop" className="brand-icon" />
+            <span className="brand-text">HydraDose</span>
           </Link>
         </div>
 
@@ -71,8 +71,8 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
         {!isAdmin && (
           <div className="navbar-links">
             <Link to="/store" className={`nav-link ${location.pathname === '/store' ? 'active' : ''}`}>Store</Link>
-            <Link to="/store?filter=new" className="nav-link">New Formulas</Link>
-            <Link to="/store?filter=top" className="nav-link">Top Sellers</Link>
+            <Link to="/store?filter=new" className="nav-link">New Sachets</Link>
+            <Link to="/store?filter=top" className="nav-link">Best Sellers</Link>
             {isDeveloper && <Link to="/developer" className="nav-link">Seller Hub</Link>}
           </div>
         )}
@@ -85,7 +85,7 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
                 <Icon name="search" size={16} />
                 <input
                   type="text"
-                  placeholder="Search supplements..."
+                  placeholder="Search sachets..."
                   value={searchQuery}
                   onChange={e => handleSearch(e.target.value)}
                   className="search-input"
@@ -141,7 +141,7 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
               {userMenuOpen && (
                 <div className="dropdown-menu">
                   <div className="dropdown-user-info">
-                    <div className="dropdown-user-name">{user.name || 'NutriFactor User'}</div>
+                    <div className="dropdown-user-name">{user.name || 'HydraDose User'}</div>
                     <div className="dropdown-user-role badge badge-blue">{user.role}</div>
                   </div>
                   <div className="dropdown-divider" />
@@ -170,12 +170,15 @@ export default function Navbar({ sidebarOpen, setSidebarOpen }) {
 
 function getGenreColor(genre) {
   const colors = {
-    Action: '#ff4757, #c0392b', RPG: '#9b59b6, #6c3483',
-    Strategy: '#2980b9, #1a5276', Puzzle: '#f39c12, #d68910',
-    Horror: '#2c3e50, #1a252f', Adventure: '#27ae60, #1e8449',
-    Shooter: '#e74c3c, #922b21', Simulation: '#16a085, #0e6655',
-    Sports: '#f1c40f, #d4ac0d', Indie: '#8e44ad, #6c3483',
+    Exercise: '#23c9b7, #0d9488',
+    Heat: '#f97316, #facc15',
+    Travel: '#38bdf8, #2563eb',
+    Wellness: '#22c55e, #84cc16',
+    Recovery: '#a78bfa, #14b8a6',
+    Sleep: '#818cf8, #312e81',
+    Immunity: '#2dd4bf, #0f766e',
+    Performance: '#06b6d4, #22c55e',
   };
-  return colors[genre] || '#4da6ff, #1a6dcc';
+  return colors[genre] || '#23c9b7, #0d9488';
 }
 

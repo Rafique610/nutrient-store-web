@@ -73,7 +73,7 @@ export default function Profile() {
         <div className="profile-right">
           <div className="profile-stats">
             <div className="stat-card">
-              <div className="stat-icon"><Icon name="local_florist" size={28} /></div>
+              <div className="stat-icon"><Icon name="water_drop" size={28} /></div>
               <div className="stat-value">{ownedproducts.length}</div>
               <div className="stat-label">Products Ordered</div>
             </div>

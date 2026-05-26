@@ -15,8 +15,9 @@ export function ProductProvider({ children }) {
 
     try {
       const data = await productsApi.list({ limit: 100, sort: 'featured' });
-      setProducts(data.products || []);
-      return data.products || [];
+      const nextProducts = data.products && data.products.length > 0 ? data.products : mockproducts;
+      setProducts(nextProducts);
+      return nextProducts;
     } catch (err) {
       const apiUrl = String(import.meta.env.VITE_API_URL || '');
       const allowMockFallback = !apiUrl || apiUrl.includes('localhost');

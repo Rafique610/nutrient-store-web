@@ -15,7 +15,7 @@ export default function Cart() {
         <div className="cart-empty">
           <Icon name="shopping_cart" size={60} className="cart-empty-icon" />
           <h2>Your cart is empty</h2>
-          <p>Find supplements for your daily wellness routine.</p>
+          <p>Find electrolyte sachets for your daily hydration routine.</p>
           <Link to="/store" className="btn btn-primary">Browse Products</Link>
         </div>
       </div>
@@ -29,7 +29,7 @@ export default function Cart() {
       <div className="cart-layout">
         <div className="cart-items">
           {cart.map(product => {
-            const colors = GENRE_COLORS[product.genre] || ['#4da6ff','#1a6dcc'];
+            const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
             return (
               <div key={product.id} className="cart-item panel">
                 <div className="cart-item-cover" style={{ background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})` }}>

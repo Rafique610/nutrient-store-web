@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Icon from '../../components/ui/Icon';
 import { adminApi } from '../../services/api';
@@ -57,7 +57,7 @@ export default function AdminDashboard() {
       </div>
       {error && <div className="auth-error" style={{ marginBottom: 16 }}>{error}</div>}
       <div className="admin-stats-grid">
-        <div className="admin-stat-card"><div className="stat-card-icon" style={{ background: 'rgba(47,143,91,0.15)', color: 'var(--accent)' }}><Icon name="apps" size={22} /></div><div className="stat-card-body"><div className="stat-card-value">{stats.totalproducts}</div><div className="stat-card-label">Total Products</div></div><div className="stat-card-trend up">+{stats.activeproducts} active</div></div>
+        <div className="admin-stat-card"><div className="stat-card-icon" style={{ background: 'rgba(35,201,183,0.16)', color: 'var(--accent)' }}><Icon name="apps" size={22} /></div><div className="stat-card-body"><div className="stat-card-value">{stats.totalproducts}</div><div className="stat-card-label">Total Sachets</div></div><div className="stat-card-trend up">+{stats.activeproducts} active</div></div>
         <div className="admin-stat-card"><div className="stat-card-icon" style={{ background: 'rgba(76,175,118,0.15)', color: '#4caf76' }}><Icon name="group" size={22} /></div><div className="stat-card-body"><div className="stat-card-value">{stats.totalUsers.toLocaleString()}</div><div className="stat-card-label">Total Users</div></div><div className="stat-card-trend up">All roles</div></div>
         <div className="admin-stat-card"><div className="stat-card-icon" style={{ background: 'rgba(240,169,64,0.15)', color: '#f0a940' }}><Icon name="shopping_cart" size={22} /></div><div className="stat-card-body"><div className="stat-card-value">{stats.totalOrders.toLocaleString()}</div><div className="stat-card-label">Total Orders</div></div><div className="stat-card-trend up">All time</div></div>
         <div className="admin-stat-card"><div className="stat-card-icon" style={{ background: 'rgba(155,89,182,0.15)', color: '#9b59b6' }}><Icon name="attach_money" size={22} /></div><div className="stat-card-body"><div className="stat-card-value">${stats.totalRevenue >= 1000 ? `${(stats.totalRevenue / 1000).toFixed(1)}K` : stats.totalRevenue.toFixed(2)}</div><div className="stat-card-label">Total Revenue</div></div><div className="stat-card-trend up">{stats.pendingApprovals} drafts</div></div>
@@ -67,7 +67,7 @@ export default function AdminDashboard() {
           <div className="admin-panel-header"><h2><Icon name="trending_up" size={18} /> Top Selling Products</h2><Link to="/admin/products" className="admin-panel-link">View All <Icon name="arrow_forward" size={14} /></Link></div>
           <div className="top-products-list">
             {topproducts.map((product, i) => {
-              const colors = GENRE_COLORS[product.genre] || ['#4da6ff','#1a6dcc'];
+              const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
               return (
                 <div key={product.id} className="top-product-row">
                   <span className="top-product-rank">#{i + 1}</span>
@@ -93,7 +93,7 @@ export default function AdminDashboard() {
             </div>
           </div>
           <div className="admin-panel">
-            <div className="admin-panel-header"><h2><Icon name="bar_chart" size={18} /> Health Goal Breakdown</h2></div>
+            <div className="admin-panel-header"><h2><Icon name="bar_chart" size={18} /> Use Case Breakdown</h2></div>
             <div className="genre-breakdown">
               {Object.entries(GENRE_COLORS).map(([genre, colors]) => {
                 const count = products.filter(g => g.genre === genre).length;

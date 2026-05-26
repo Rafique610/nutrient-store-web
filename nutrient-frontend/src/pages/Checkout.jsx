@@ -118,7 +118,7 @@ export default function Checkout() {
             {error && <div className="auth-error" style={{ marginBottom: 12 }}>{error}</div>}
             <div className="co-items">
               {cart.map(g => {
-                const colors = GENRE_COLORS[g.genre] || ['#4da6ff','#1a6dcc'];
+                const colors = GENRE_COLORS[g.genre] || ['#23c9b7','#0d9488'];
                 return (
                   <div key={g.id} className="co-item">
                     <div className="co-item-cover" style={{ background: `linear-gradient(135deg, ${colors[0]}, ${colors[1]})` }}>

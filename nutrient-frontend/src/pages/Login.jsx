@@ -36,8 +36,8 @@ export default function Login() {
       <div className="auth-bg"><div className="auth-bg-orb auth-bg-orb-1" /><div className="auth-bg-orb auth-bg-orb-2" /></div>
       <div className="auth-card">
         <div className="auth-logo">
-          <Icon name="local_florist" className="auth-logo-icon" />
-          <h1>NutriFactor</h1>
+          <Icon name="water_drop" className="auth-logo-icon" />
+          <h1>HydraDose</h1>
           <p>Sign in to your account</p>
         </div>
         {error && <div className="auth-error"><Icon name="error" size={16} /> {error}</div>}

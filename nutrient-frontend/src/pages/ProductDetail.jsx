@@ -90,7 +90,7 @@ export default function ProductDetail() {
     );
   }
 
-  const colors = GENRE_COLORS[product.genre] || ['#4da6ff','#1a6dcc'];
+  const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
   const owned = isOwned(product.id);
   const inCart = isInCart(product.id);
   const avgRating = localReviews.length > 0
@@ -160,7 +160,7 @@ export default function ProductDetail() {
         <div className="gd-main">
           {/* Details */}
           <div className="gd-section panel">
-            <h3>Product Details</h3>
+            <h3>Sachet Details</h3>
             <p className="gd-description">{product.description}</p>
           </div>
 
@@ -257,7 +257,7 @@ export default function ProductDetail() {
 
             <div className="gd-details-list">
               <div className="gd-detail-row">
-                <span><Icon name="sell" size={14} /> Health Goal</span>
+                <span><Icon name="sell" size={14} /> Use Case</span>
                 <strong>{product.genre}</strong>
               </div>
               <div className="gd-detail-row">

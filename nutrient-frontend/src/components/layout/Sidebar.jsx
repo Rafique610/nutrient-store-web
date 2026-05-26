@@ -4,11 +4,11 @@ import Icon from '../ui/Icon';
 import './Sidebar.css';
 
 const GENRES = [
-  { name: 'Immunity' },
-  { name: 'Vitamins' },
-  { name: 'Digestive Health' },
-  { name: 'Sports Nutrition' },
-  { name: 'Herbal' },
+  { name: 'Exercise' },
+  { name: 'Heat' },
+  { name: 'Travel' },
+  { name: 'Wellness' },
+  { name: 'Performance' },
 ];
 
 export default function Sidebar({ open }) {
@@ -59,9 +59,9 @@ export default function Sidebar({ open }) {
       <div className="sidebar-section">
         <div className="sidebar-heading">DISCOVER</div>
         <NavItem to="/" icon="home" label="Home" />
-        <NavItem to="/store" icon="apps" label="All Products" />
-        <NavItem to="/store?filter=new" icon="bolt" label="New Formulas" />
-        <NavItem to="/store?filter=top" icon="trending_up" label="Top Sellers" />
+        <NavItem to="/store" icon="apps" label="All Sachets" />
+        <NavItem to="/store?filter=new" icon="bolt" label="New Sachets" />
+        <NavItem to="/store?filter=top" icon="trending_up" label="Best Sellers" />
         <NavItem to="/store?filter=free" icon="sell" label="Samples" />
       </div>
 
@@ -75,15 +75,15 @@ export default function Sidebar({ open }) {
       )}
 
       <div className="sidebar-section">
-        <div className="sidebar-heading">HEALTH GOALS</div>
+        <div className="sidebar-heading">USE CASES</div>
         {GENRES.map(g => (
           <Link key={g.name} to={`/store?genre=${g.name}`} className={`sidebar-item ${location.search.includes(g.name) ? 'active' : ''}`}>
-            <Icon name="local_florist" size={16} style={{ opacity: 0.6 }} />
+            <Icon name="water_drop" size={16} style={{ opacity: 0.6 }} />
             <span>{g.name}</span>
           </Link>
         ))}
         <Link to="/store?filter=all-genres" className="sidebar-item sidebar-more">
-          <span>Browse All Goals <Icon name="arrow_forward" size={14} /></span>
+          <span>Browse All Uses <Icon name="arrow_forward" size={14} /></span>
         </Link>
       </div>
     </aside>

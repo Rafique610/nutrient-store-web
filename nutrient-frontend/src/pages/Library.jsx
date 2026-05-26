@@ -98,7 +98,7 @@ export default function Library() {
         <div className="library-empty panel">
           <Icon name="library_books" size={60} className="lib-empty-icon" />
           <h2>Your order history is empty</h2>
-          <p>Purchase supplements from the store to start your wellness shelf.</p>
+          <p>Purchase sachets from the store to start your hydration shelf.</p>
           <Link to="/store" className="btn btn-primary">Browse Store</Link>
         </div>
       ) : filteredOrders.length === 0 ? (
