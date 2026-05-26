@@ -1,8 +1,11 @@
 import dotenv from "dotenv";
 import fs from "fs";
 import mongoose from "mongoose";
+
 import path from "path";
+
 import { mockproducts, mockReviews, mockOrders } from "../data/mockData.js";
+
 import Product from "../models/Product.js";
 import Order from "../models/Order.js";
 import Review from "../models/Review.js";
