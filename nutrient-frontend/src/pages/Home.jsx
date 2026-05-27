@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiStar } from 'react-icons/fi';
+import { FiArrowRight, FiStar, FiCheck } from 'react-icons/fi';
 import { useproducts } from '../context/ProductContext';
 import { GENRE_COLORS } from '../data/mockData';
 import './Home.css';
@@ -17,7 +17,7 @@ const USE_CASES = [
 const BENEFITS = [
   { value: '0g', label: 'Sugar', desc: 'No crash' },
   { value: '0', label: 'Calories', desc: 'Pure hydration' },
-  { value: '4', label: 'Key Minerals', desc: 'Sodium, potassium, magnesium, zinc' },
+  { value: '4', label: 'Key Minerals', desc: 'Complete blend' },
 ];
 
 const MINERALS = [
@@ -25,6 +25,26 @@ const MINERALS = [
   { name: 'Potassium', amount: '200mg', desc: 'Heart support' },
   { name: 'Magnesium', amount: '100mg', desc: 'Muscle recovery' },
   { name: 'Zinc', amount: '10mg', desc: 'Daily immunity' },
+];
+
+const TESTIMONIALS = [
+  { name: 'Sarah M.', role: 'Marathon Runner', text: 'Finally a hydration product that doesn\'t taste like sugar water. Game changer for long runs.', rating: 5 },
+  { name: 'James T.', role: 'Fitness Coach', text: 'My clients love these. Clean ingredients, effective hydration. Recommend to everyone.', rating: 5 },
+  { name: 'Lisa K.', role: 'Travel Blogger', text: 'Lightweight, portable, and actually tastes good. Perfect for hiking trips.', rating: 5 },
+];
+
+const FEATURES = [
+  { title: 'No Artificial Sweeteners', desc: 'Sweetened naturally. No aftertaste, no compromise.' },
+  { title: 'Single-Serve Sachets', desc: 'Grab one, mix in water, go. Perfect portioning every time.' },
+  { title: 'Clinically Formulated', desc: 'Electrolyte ratios matched to your body\'s needs during activity.' },
+  { title: 'Vegan & Non-GMO', desc: 'Clean ingredients you can feel good about.' },
+];
+
+const FAQS = [
+  { q: 'When should I drink HydraDose?', a: 'Before, during, or after any physical activity. Also great for everyday hydration.' },
+  { q: 'How much sodium is in each sachet?', a: '800mg—optimal for electrolyte balance during intense exercise.' },
+  { q: 'Can I use it every day?', a: 'Absolutely. Our formula is safe for daily use and everyday hydration.' },
+  { q: 'How long does one sachet last?', a: 'One sachet makes 16oz of hydration drink. Most people consume it during or after activity.' },
 ];
 
 export default function Home() {
@@ -54,12 +74,11 @@ export default function Home() {
 
           <h1 className="hero-v2-title">
             Hydrate<br />
-            <span className="hero-title-accent">without</span><br />
-            the sugar.
+            <span className="hero-title-accent">smarter.</span>
           </h1>
 
           <p className="hero-v2-desc">
-            Zero-sugar electrolyte sachets built around sodium, potassium, magnesium and zinc. For workouts, heat, travel and everyday life.
+            Zero-sugar electrolyte sachets. Packed with sodium, potassium, magnesium, and zinc. Trusted by athletes, loved by everyone.
           </p>
 
           {/* Benefits */}
@@ -77,13 +96,18 @@ export default function Home() {
             <Link to="/store" className="btn btn-primary btn-lg hero-cta-btn">
               Shop Now <FiArrowRight size={16} />
             </Link>
-            <Link to="/store?filter=free" className="btn btn-secondary hero-sample-btn">
-              Free Samples
+            <Link to="/store?filter=new" className="btn btn-secondary hero-sample-btn">
+              View Products
             </Link>
+          </div>
+
+          <div className="hero-trust">
+            <span className="trust-icon">✓</span>
+            <span>100% money-back guarantee. No questions asked.</span>
           </div>
         </div>
 
-        {/* Product image */}
+        {/* Hero visual - smaller */}
         {heroProduct && (
           <div className="hero-v2-visual">
             <div className="hero-product-card">
@@ -126,11 +150,31 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FEATURES ── */}
+      <section className="features-section">
+        <div className="features-inner">
+          <div className="section-label">Why athletes choose HydraDose</div>
+          <h2 className="features-title">Engineered for performance</h2>
+          <div className="features-grid">
+            {FEATURES.map(f => (
+              <div key={f.title} className="feature-card">
+                <div className="feature-icon"><FiCheck size={24} /></div>
+                <h3 className="feature-title">{f.title}</h3>
+                <p className="feature-desc">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FEATURED PRODUCTS ── */}
       {featuredProducts.length > 0 && (
         <section className="featured-section">
           <div className="featured-header">
-            <h2 className="featured-title">Best Sellers</h2>
+            <div>
+              <div className="section-label">Best sellers</div>
+              <h2 className="featured-title">Top-rated flavors</h2>
+            </div>
             <Link to="/store?filter=top" className="featured-more">
               See all <FiArrowRight size={13} />
             </Link>
@@ -168,34 +212,94 @@ export default function Home() {
         </section>
       )}
 
-      {/* ── WHY HYDRADOSE ── */}
-      <section className="why-section">
-        <div className="why-inner">
-          <div className="section-label">Why HydraDose</div>
-          <h2 className="why-title">Replenish what<br />sweat takes out.</h2>
-
-          <div className="why-grid">
-            {[
-              { title: 'Zero sugar', body: 'No spike, no crash. Clean hydration that tastes good.' },
-              { title: 'Mineral-first', body: 'Built around sodium, potassium, magnesium, zinc.' },
-              { title: 'Travel-ready', body: 'Single-serve sachets. Gym bag, carry-on, office drawer.' },
-            ].map(({ title, body }) => (
-              <div key={title} className="why-card">
-                <h3 className="why-card-title">{title}</h3>
-                <p className="why-card-body">{body}</p>
+      {/* ── TESTIMONIALS ── */}
+      <section className="testimonials-section">
+        <div className="testimonials-inner">
+          <div className="section-label">Real results</div>
+          <h2 className="testimonials-title">Loved by athletes worldwide</h2>
+          <div className="testimonials-grid">
+            {TESTIMONIALS.map((t, i) => (
+              <div key={i} className="testimonial-card">
+                <div className="testimonial-stars">
+                  {[...Array(t.rating)].map((_, j) => (
+                    <FiStar key={j} size={14} fill="#fbbf24" color="#fbbf24" />
+                  ))}
+                </div>
+                <p className="testimonial-text">"{t.text}"</p>
+                <div className="testimonial-author">
+                  <div className="testimonial-avatar">{t.name[0]}</div>
+                  <div>
+                    <div className="testimonial-name">{t.name}</div>
+                    <div className="testimonial-role">{t.role}</div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      {/* ── STATS ── */}
+      <section className="stats-section">
+        <div className="stats-grid">
+          <div className="stat-box">
+            <div className="stat-number">50K+</div>
+            <div className="stat-label">Active Users</div>
+          </div>
+          <div className="stat-box">
+            <div className="stat-number">98%</div>
+            <div className="stat-label">Would Recommend</div>
+          </div>
+          <div className="stat-box">
+            <div className="stat-number">4.8★</div>
+            <div className="stat-label">Average Rating</div>
+          </div>
+          <div className="stat-box">
+            <div className="stat-number">10M+</div>
+            <div className="stat-label">Sachets Sold</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section className="faq-section">
+        <div className="faq-inner">
+          <div className="section-label">Questions?</div>
+          <h2 className="faq-title">Frequently asked</h2>
+          <div className="faq-grid">
+            {FAQS.map((item, i) => (
+              <div key={i} className="faq-item">
+                <div className="faq-question">{item.q}</div>
+                <div className="faq-answer">{item.a}</div>
+              </div>
+            ))}
+          </div>
+          <div className="faq-cta">
+            <p>Still have questions?</p>
+            <a href="#" className="btn btn-secondary">Contact us</a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEWSLETTER ── */}
+      <section className="newsletter-section">
+        <div className="newsletter-inner">
+          <h2 className="newsletter-title">Stay hydrated. Stay updated.</h2>
+          <p className="newsletter-sub">Get tips, new flavors, and exclusive offers delivered to your inbox.</p>
+          <form className="newsletter-form" onSubmit={e => { e.preventDefault(); alert('Thanks for signing up!'); }}>
+            <input type="email" placeholder="your@email.com" required className="newsletter-input" />
+            <button type="submit" className="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </section>
+
       {/* ── BOTTOM CTA ── */}
       <section className="bottom-cta">
         <div className="bottom-cta-inner">
-          <h2 className="bottom-cta-title">Ready to hydrate smarter?</h2>
-          <p className="bottom-cta-sub">Browse all sachets and find your pack.</p>
+          <h2 className="bottom-cta-title">Ready to upgrade your hydration?</h2>
+          <p className="bottom-cta-sub">Join thousands of athletes who trust HydraDose for clean, effective hydration.</p>
           <div className="bottom-cta-btns">
-            <Link to="/store" className="btn btn-primary btn-lg">Browse Store</Link>
+            <Link to="/store" className="btn btn-primary btn-lg">Shop Now</Link>
             <Link to="/store?filter=top" className="btn btn-secondary btn-lg">Best Sellers</Link>
           </div>
         </div>
