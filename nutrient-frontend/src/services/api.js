@@ -1,5 +1,5 @@
-﻿const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-const API_ORIGIN = API_BASE_URL.replace(/\/api\/?$/, '');
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_ORIGIN = API_BASE_URL === '/api' ? '' : API_BASE_URL.replace(/\/api\/?$/, '');
 
 let authToken = localStorage.getItem('ns_token') || '';
 
@@ -281,4 +281,3 @@ export const adminApi = {
   })),
   deleteproduct: (id) => request(`/admin/products/${id}`, { method: 'DELETE' }),
 };
-
