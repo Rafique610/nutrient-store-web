@@ -1,23 +1,23 @@
 import { Link } from 'react-router-dom';
-import { FiArrowRight, FiStar, FiZap, FiDroplet, FiShield, FiTrendingUp, FiMoon, FiNavigation2, FiActivity } from 'react-icons/fi';
+import { FiArrowRight, FiStar } from 'react-icons/fi';
 import { useproducts } from '../context/ProductContext';
 import { GENRE_COLORS } from '../data/mockData';
 import './Home.css';
 
 const USE_CASES = [
-  { name: 'Exercise', icon: FiActivity, color: '#23c9b7' },
-  { name: 'Heat', icon: FiZap, color: '#f97316' },
-  { name: 'Travel', icon: FiNavigation2, color: '#38bdf8' },
-  { name: 'Wellness', icon: FiDroplet, color: '#22c55e' },
-  { name: 'Recovery', icon: FiShield, color: '#a78bfa' },
-  { name: 'Sleep', icon: FiMoon, color: '#818cf8' },
-  { name: 'Performance', icon: FiTrendingUp, color: '#06b6d4' },
+  { name: 'Exercise', color: '#23c9b7' },
+  { name: 'Heat', color: '#f97316' },
+  { name: 'Travel', color: '#38bdf8' },
+  { name: 'Wellness', color: '#22c55e' },
+  { name: 'Recovery', color: '#a78bfa' },
+  { name: 'Sleep', color: '#818cf8' },
+  { name: 'Performance', color: '#06b6d4' },
 ];
 
 const BENEFITS = [
-  { icon: '0g', label: 'Sugar', sub: 'Clean energy' },
-  { icon: '0', label: 'Calories', sub: 'Zero guilt' },
-  { icon: '4x', label: 'Minerals', sub: 'Essential blend' },
+  { value: '0g', label: 'Sugar', desc: 'No crash' },
+  { value: '0', label: 'Calories', desc: 'Pure hydration' },
+  { value: '4', label: 'Key Minerals', desc: 'Sodium, potassium, magnesium, zinc' },
 ];
 
 const MINERALS = [
@@ -62,12 +62,13 @@ export default function Home() {
             Zero-sugar electrolyte sachets built around sodium, potassium, magnesium and zinc. For workouts, heat, travel and everyday life.
           </p>
 
-          {/* Stats pills */}
-          <div className="hero-v2-pills">
+          {/* Benefits */}
+          <div className="hero-benefits">
             {BENEFITS.map(b => (
-              <div key={b.label} className="hero-pill">
-                <span className="hero-pill-value">{b.icon}</span>
-                <span className="hero-pill-label">{b.label}</span>
+              <div key={b.label} className="benefit-item">
+                <div className="benefit-value">{b.value}</div>
+                <div className="benefit-label">{b.label}</div>
+                <div className="benefit-desc">{b.desc}</div>
               </div>
             ))}
           </div>
@@ -112,16 +113,13 @@ export default function Home() {
       <section className="use-cases-section">
         <div className="section-label">Shop by use case</div>
         <div className="use-cases-scroll">
-          {USE_CASES.map(({ name, icon: Icon, color }) => (
+          {USE_CASES.map(({ name, color }) => (
             <Link
               key={name}
               to={`/store?genre=${name}`}
               className="use-case-chip"
               style={{ '--chip-color': color }}
             >
-              <span className="chip-icon-wrap">
-                <Icon size={16} color={color} />
-              </span>
               {name}
             </Link>
           ))}
@@ -178,14 +176,11 @@ export default function Home() {
 
           <div className="why-grid">
             {[
-              { icon: FiZap, title: 'Zero sugar', body: 'No spike, no crash. Clean hydration that tastes good.' },
-              { icon: FiDroplet, title: 'Mineral-first', body: 'Built around sodium, potassium, magnesium, zinc.' },
-              { icon: FiNavigation2, title: 'Travel-ready', body: 'Single-serve sachets. Gym bag, carry-on, office drawer.' },
-            ].map(({ icon: Icon, title, body }) => (
+              { title: 'Zero sugar', body: 'No spike, no crash. Clean hydration that tastes good.' },
+              { title: 'Mineral-first', body: 'Built around sodium, potassium, magnesium, zinc.' },
+              { title: 'Travel-ready', body: 'Single-serve sachets. Gym bag, carry-on, office drawer.' },
+            ].map(({ title, body }) => (
               <div key={title} className="why-card">
-                <div className="why-card-icon">
-                  <Icon size={20} color="var(--accent)" />
-                </div>
                 <h3 className="why-card-title">{title}</h3>
                 <p className="why-card-body">{body}</p>
               </div>
