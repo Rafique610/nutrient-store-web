@@ -1,6 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import helmet from "helmet";
+import rateLimit from "express-rate-limit";
 import fs from "fs";
 import path from "path";
 import connectDB from "./config/db.js";
@@ -16,38 +18,74 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.set("trust proxy", 1);
 const uploadRoot = path.join(process.cwd(), "uploads");
 
 fs.mkdirSync(path.join(uploadRoot, "products", "images"), { recursive: true });
 fs.mkdirSync(path.join(uploadRoot, "products", "files"), { recursive: true });
 
-// Middleware
-const allowedOrigins = process.env.CLIENT_URL
-  ? process.env.CLIENT_URL.split(",").map((origin) => origin.trim())
-  : null;
+const isProd = process.env.NODE_ENV === "production";
+const allowedOrigins = (process.env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 600,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 30,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+});
+
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
+
+const corsOrigin =
+  !isProd && allowedOrigins.length === 0
+    ? true
+    : (origin, callback) => {
+        if (!origin) {
+          callback(null, true);
+          return;
+        }
+
+        if (allowedOrigins.length === 0) {
+          callback(new Error("CORS: CLIENT_URL not configured"));
+          return;
+        }
+
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error(`CORS: origin ${origin} not allowed`));
+      };
 
 app.use(
   cors({
-    origin: allowedOrigins
-      ? (origin, callback) => {
-          // allow requests with no origin (e.g. mobile apps, curl)
-          if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-          } else {
-            callback(new Error(`CORS: origin ${origin} not allowed`));
-          }
-        }
-      : true,
+    origin: corsOrigin,
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+app.use(apiLimiter);
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use("/uploads", express.static(uploadRoot));
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);

@@ -3,8 +3,8 @@ import Icon from '../../components/ui/Icon';
 import { adminApi } from '../../services/api';
 import './AdminUsers.css';
 
-const ROLES = ['customer', 'developer', 'admin'];
-const ROLE_BADGE = { admin: 'badge-red', developer: 'badge-gold', customer: 'badge-blue' };
+const ROLES = ['customer', 'admin'];
+const ROLE_BADGE = { admin: 'badge-red', customer: 'badge-blue' };
 const EMPTY_USER = { name: '', email: '', password: '', role: 'customer' };
 
 export default function AdminUsers() {

@@ -1,15 +1,15 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Icon from '../components/ui/Icon';
 import './Profile.css';
 
 export default function Profile() {
-  const { user, libraryproducts, orders, updateProfile } = useAuth();
+  const { user, purchasedProducts, orders, updateProfile } = useAuth();
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState(user?.name || '');
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
-  const ownedproducts = libraryproducts;
+  const ownedproducts = purchasedProducts;
 
   useEffect(() => {
     setName(user?.name || '');
@@ -29,7 +29,7 @@ export default function Profile() {
     }
   };
 
-  const roleColors = { admin: 'badge-red', developer: 'badge-gold', customer: 'badge-blue' };
+  const roleColors = { admin: 'badge-red', customer: 'badge-blue' };
 
   return (
     <div className="profile-page">

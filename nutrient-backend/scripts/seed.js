@@ -31,20 +31,13 @@ const seed = async () => {
     User.deleteMany({}),
   ]);
 
-  const [customer, developer, admin] = await User.create([
+  const [customer, admin] = await User.create([
     {
       username: "Alex Morgan",
       email: "customer@nutrifactor.local",
       password: "password123",
       role: "customer",
       profile: { fullName: "Alex Morgan" },
-    },
-    {
-      username: "Sam Chen",
-      email: "seller@nutrifactor.local",
-      password: "password123",
-      role: "seller",
-      profile: { fullName: "NutriFactor Wellness Lab" },
     },
     {
       username: "Admin User",
@@ -66,7 +59,7 @@ const seed = async () => {
     mockproducts.map((product, index) => ({
       title: product.title,
       description: product.description,
-      seller: developer._id,
+      seller: admin._id,
       brandName: index < 3 ? "NutriFactor Wellness Lab" : product.developer,
       price: product.price,
       category: product.genre,
@@ -139,7 +132,6 @@ const seed = async () => {
 
   console.log("Seed complete");
   console.log("Customer: customer@nutrifactor.local / password123");
-  console.log("Seller: seller@nutrifactor.local / password123");
   console.log("Admin: admin@nutrifactor.local / password123");
 
   await mongoose.disconnect();
@@ -150,4 +142,3 @@ seed().catch(async (error) => {
   await mongoose.disconnect();
   process.exit(1);
 });
-

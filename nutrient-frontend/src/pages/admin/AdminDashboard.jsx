@@ -106,7 +106,7 @@ export default function AdminDashboard() {
           <div className="admin-panel">
             <div className="admin-panel-header"><h2><Icon name="group" size={18} /> Recent Users</h2><Link to="/admin/users" className="admin-panel-link">View All <Icon name="arrow_forward" size={14} /></Link></div>
             <div className="recent-users-list">
-              {users.slice(0, 5).map(u => (<div key={u.id} className="recent-user-row"><div className="recent-user-avatar">{u.name[0]}</div><div className="recent-user-info"><div className="recent-user-name">{u.name}</div><div className="recent-user-email text-muted text-sm">{u.email}</div></div><span className={`badge ${u.role === 'admin' ? 'badge-red' : u.role === 'developer' ? 'badge-gold' : 'badge-blue'}`}>{u.role}</span></div>))}
+              {users.slice(0, 5).map(u => (<div key={u.id} className="recent-user-row"><div className="recent-user-avatar">{u.name[0]}</div><div className="recent-user-info"><div className="recent-user-name">{u.name}</div><div className="recent-user-email text-muted text-sm">{u.email}</div></div><span className={`badge ${u.role === 'admin' ? 'badge-red' : 'badge-blue'}`}>{u.role}</span></div>))}
             </div>
           </div>
         </div>

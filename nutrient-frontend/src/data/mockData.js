@@ -268,7 +268,6 @@ export const mockproducts = sachetCatalog.map(product => ({
 
 export const mockUsers = [
   { id: 1, name: 'Ayesha Khan', email: 'customer@hydrastore.local', role: 'customer', avatar: null, joinDate: '2025-01-15', purchases: [1, 3, 6], cart: [] },
-  { id: 2, name: 'HydraDose Team', email: 'seller@hydrastore.local', role: 'seller', avatar: null, joinDate: '2024-11-08', studio: 'HydraDose Labs' },
   { id: 3, name: 'Admin User', email: 'admin@hydrastore.local', role: 'admin', avatar: null, joinDate: '2024-01-01' },
 ];
 

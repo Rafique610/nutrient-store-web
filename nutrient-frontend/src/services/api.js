@@ -133,7 +133,7 @@ export function normalizeUser(user) {
     avatar: user.avatar || user.profile?.avatar || null,
     bio: user.bio || user.profile?.bio || '',
     joinDate: user.joinDate || user.createdAt,
-    studio: user.studio || (user.role === 'seller' ? name : undefined),
+    studio: user.studio,
   };
 }
 

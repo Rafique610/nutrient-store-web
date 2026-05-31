@@ -1,4 +1,4 @@
-﻿import Product from "../models/Product.js";
+import Product from "../models/Product.js";
 import Order from "../models/Order.js";
 import Review from "../models/Review.js";
 import User from "../models/User.js";
@@ -8,7 +8,7 @@ import { formatUser } from "./authController.js";
 export const getAdminUsers = async (req, res, next) => {
   try {
     const query = {};
-    if (req.query.role && ["customer", "seller", "admin"].includes(req.query.role)) {
+    if (req.query.role && ["customer", "admin"].includes(req.query.role)) {
       query.role = req.query.role;
     }
     if (req.query.search) {
@@ -55,7 +55,6 @@ export const getAdminStats = async (_req, res, next) => {
       activeProducts,
       pendingApprovals,
       totalCustomers,
-      totalSellers,
       revenue,
     ] = await Promise.all([
       User.countDocuments(),
@@ -64,7 +63,6 @@ export const getAdminStats = async (_req, res, next) => {
       Product.countDocuments({ status: "published" }),
       Product.countDocuments({ status: "draft" }),
       User.countDocuments({ role: "customer" }),
-      User.countDocuments({ role: "seller" }),
       Order.aggregate([
         { $match: { paymentStatus: "completed" } },
         { $group: { _id: null, totalRevenue: { $sum: "$totalAmount" } } },
@@ -81,7 +79,7 @@ export const getAdminStats = async (_req, res, next) => {
         activeproducts: activeProducts,
         pendingApprovals,
         totalCustomers,
-        totalDevelopers: totalSellers,
+        totalDevelopers: 0,
       },
     });
   } catch (error) {
@@ -101,10 +99,10 @@ export const createAdminUser = async (req, res, next) => {
       });
     }
 
-    if (!["customer", "seller", "admin"].includes(role)) {
+    if (!["customer", "admin"].includes(role)) {
       return res.status(400).json({
         success: false,
-        message: "Role must be customer, seller, or admin",
+        message: "Role must be customer or admin",
       });
     }
 
@@ -149,7 +147,7 @@ export const updateAdminUser = async (req, res, next) => {
     }
 
     if (req.body.email) user.email = req.body.email.toLowerCase();
-    if (req.body.role && ["customer", "seller", "admin"].includes(req.body.role)) {
+    if (req.body.role && ["customer", "admin"].includes(req.body.role)) {
       user.role = req.body.role;
     }
     if (typeof req.body.avatar === "string") user.profile.avatar = req.body.avatar;

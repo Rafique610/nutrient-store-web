@@ -27,8 +27,7 @@ export default function Login() {
 
   const demoAccounts = [
     { label: 'Customer', email: 'customer@nutrifactor.local', pw: 'password123' },
-    { label: 'Seller', email: 'seller@nutrifactor.local', pw: 'password123' },
-    { label: 'Admin', email: 'admin@nutrifactor.local', pw: '' },
+    { label: 'Admin', email: 'admin@nutrifactor.local', pw: 'password123' },
   ];
 
   return (

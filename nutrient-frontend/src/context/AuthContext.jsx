@@ -5,33 +5,37 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
-  const [cart, setCart] = useState([]);
-  const [libraryproducts, setLibraryproducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [purchasedProducts, setPurchasedProducts] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const STORAGE_KEYS = useMemo(() => ({
+    token: 'ns_token',
+    user: 'ns_user',
+    cart: 'ns_cart',
+    purchasedProducts: 'ns_purchased_products',
+    orders: 'ns_orders',
+  }), []);
+
   const persistUser = (nextUser) => {
     if (nextUser) {
-      localStorage.setItem('ns_user', JSON.stringify(nextUser));
-      localStorage.setItem('gv_user', JSON.stringify(nextUser));
+      localStorage.setItem(STORAGE_KEYS.user, JSON.stringify(nextUser));
     } else {
-      localStorage.removeItem('ns_user');
-      localStorage.removeItem('gv_user');
+      localStorage.removeItem(STORAGE_KEYS.user);
     }
   };
 
   const applyCart = (items) => {
     const normalized = items || [];
-    setCart(normalized);
-    localStorage.setItem('ns_cart', JSON.stringify(normalized));
-    localStorage.setItem('gv_cart', JSON.stringify(normalized));
+    setCartItems(normalized);
+    localStorage.setItem(STORAGE_KEYS.cart, JSON.stringify(normalized));
   };
 
-  const applyLibrary = (items) => {
+  const applyPurchasedProducts = (items) => {
     const normalized = items || [];
-    setLibraryproducts(normalized);
-    localStorage.setItem('ns_library', JSON.stringify(normalized.map((product) => product.id)));
-    localStorage.setItem('gv_library', JSON.stringify(normalized.map((product) => product.id)));
+    setPurchasedProducts(normalized);
+    localStorage.setItem(STORAGE_KEYS.purchasedProducts, JSON.stringify(normalized));
   };
 
   const loadAccountData = async () => {
@@ -44,31 +48,48 @@ export function AuthProvider({ children }) {
     if (cartData.status === 'fulfilled') applyCart(cartData.value.items || []);
     else applyCart([]);
 
-    if (libraryData.status === 'fulfilled') applyLibrary(libraryData.value.products || []);
-    else applyLibrary([]);
+    if (libraryData.status === 'fulfilled') applyPurchasedProducts(libraryData.value.products || []);
+    else applyPurchasedProducts([]);
 
-    if (orderData.status === 'fulfilled') setOrders(orderData.value.orders || []);
-    else setOrders([]);
+    if (orderData.status === 'fulfilled') {
+      const nextOrders = orderData.value.orders || [];
+      setOrders(nextOrders);
+      localStorage.setItem(STORAGE_KEYS.orders, JSON.stringify(nextOrders));
+    } else {
+      setOrders([]);
+      localStorage.removeItem(STORAGE_KEYS.orders);
+    }
   };
 
   useEffect(() => {
     const restoreSession = async () => {
-      const savedToken = localStorage.getItem('ns_token') || localStorage.getItem('gv_token');
-      const savedUser = savedToken
-        ? (localStorage.getItem('ns_user') || localStorage.getItem('gv_user'))
-        : null;
+      if (!localStorage.getItem(STORAGE_KEYS.token) && localStorage.getItem('gv_token')) {
+        localStorage.setItem(STORAGE_KEYS.token, localStorage.getItem('gv_token'));
+      }
+
+      if (!localStorage.getItem(STORAGE_KEYS.user) && localStorage.getItem('gv_user')) {
+        localStorage.setItem(STORAGE_KEYS.user, localStorage.getItem('gv_user'));
+      }
+
+      if (!localStorage.getItem(STORAGE_KEYS.cart) && localStorage.getItem('gv_cart')) {
+        localStorage.setItem(STORAGE_KEYS.cart, localStorage.getItem('gv_cart'));
+      }
+
+      ['gv_token', 'gv_user', 'gv_cart', 'gv_library', 'gv_orders', 'ns_library'].forEach((key) => localStorage.removeItem(key));
+
+      const savedToken = localStorage.getItem(STORAGE_KEYS.token);
+      const savedUser = savedToken ? localStorage.getItem(STORAGE_KEYS.user) : null;
 
       if (!savedToken) {
         setAuthToken('');
         setUser(null);
-        setCart([]);
-        setLibraryproducts([]);
+        setCartItems([]);
+        setPurchasedProducts([]);
         setOrders([]);
         persistUser(null);
-        localStorage.removeItem('ns_cart');
-        localStorage.removeItem('gv_cart');
-        localStorage.removeItem('ns_library');
-        localStorage.removeItem('gv_library');
+        localStorage.removeItem(STORAGE_KEYS.cart);
+        localStorage.removeItem(STORAGE_KEYS.purchasedProducts);
+        localStorage.removeItem(STORAGE_KEYS.orders);
         setLoading(false);
         return;
       }
@@ -86,14 +107,13 @@ export function AuthProvider({ children }) {
       } catch (_err) {
         setAuthToken('');
         setUser(null);
-        setCart([]);
-        setLibraryproducts([]);
+        setCartItems([]);
+        setPurchasedProducts([]);
         setOrders([]);
         persistUser(null);
-        localStorage.removeItem('ns_cart');
-        localStorage.removeItem('gv_cart');
-        localStorage.removeItem('ns_library');
-        localStorage.removeItem('gv_library');
+        localStorage.removeItem(STORAGE_KEYS.cart);
+        localStorage.removeItem(STORAGE_KEYS.purchasedProducts);
+        localStorage.removeItem(STORAGE_KEYS.orders);
       } finally {
         setLoading(false);
       }
@@ -116,15 +136,15 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const register = async (name, email, password, role) => {
+  const register = async (name, email, password) => {
     try {
-      const data = await authApi.register({ name, email, password, role });
+      const data = await authApi.register({ name, email, password });
       setAuthToken(data.token);
       const normalizedUser = normalizeUser(data.user);
       setUser(normalizedUser);
       persistUser(normalizedUser);
       applyCart([]);
-      applyLibrary([]);
+      applyPurchasedProducts([]);
       setOrders([]);
       return { success: true };
     } catch (err) {
@@ -135,14 +155,13 @@ export function AuthProvider({ children }) {
   const logout = () => {
     setAuthToken('');
     setUser(null);
-    setCart([]);
-    setLibraryproducts([]);
+    setCartItems([]);
+    setPurchasedProducts([]);
     setOrders([]);
     persistUser(null);
-    localStorage.removeItem('ns_cart');
-    localStorage.removeItem('gv_cart');
-    localStorage.removeItem('ns_library');
-    localStorage.removeItem('gv_library');
+    localStorage.removeItem(STORAGE_KEYS.cart);
+    localStorage.removeItem(STORAGE_KEYS.purchasedProducts);
+    localStorage.removeItem(STORAGE_KEYS.orders);
   };
 
   const refreshCart = async () => {
@@ -150,19 +169,21 @@ export function AuthProvider({ children }) {
     applyCart(data.items || []);
   };
 
-  const refreshLibrary = async () => {
+  const refreshPurchasedProducts = async () => {
     const data = await orderApi.library();
-    applyLibrary(data.products || []);
+    applyPurchasedProducts(data.products || []);
   };
 
   const refreshOrders = async () => {
     const data = await orderApi.list();
-    setOrders(data.orders || []);
+    const nextOrders = data.orders || [];
+    setOrders(nextOrders);
+    localStorage.setItem(STORAGE_KEYS.orders, JSON.stringify(nextOrders));
   };
 
   const addToCart = async (product) => {
     if (!user || !product) return false;
-    if (cart.find((item) => item.id === product.id)) return false;
+    if (cartItems.find((item) => item.id === product.id)) return false;
 
     try {
       const data = await orderApi.addToCart(product.id);
@@ -178,7 +199,7 @@ export function AuthProvider({ children }) {
       const data = await orderApi.removeFromCart(productId);
       applyCart(data.items || []);
     } catch (_err) {
-      const newCart = cart.filter((item) => item.id !== String(productId));
+      const newCart = cartItems.filter((item) => item.id !== String(productId));
       applyCart(newCart);
     }
   };
@@ -192,10 +213,10 @@ export function AuthProvider({ children }) {
     applyCart([]);
   };
 
-  const purchaseproducts = async (_productIds, paymentMethod = 'mock') => {
+  const checkout = async (paymentMethod = 'mock') => {
     const data = await orderApi.checkout({ paymentMethod });
     applyCart([]);
-    applyLibrary(data.library || []);
+    applyPurchasedProducts(data.library || []);
     await refreshOrders();
     return data.order;
   };
@@ -208,18 +229,18 @@ export function AuthProvider({ children }) {
     return normalizedUser;
   };
 
-  const library = useMemo(() => libraryproducts.map((product) => product.id), [libraryproducts]);
-  const cartTotal = cart.reduce((sum, product) => sum + (product.price || 0), 0);
-  const cartCount = cart.length;
-  const isInCart = (id) => cart.some((product) => product.id === String(id));
-  const isOwned = (id) => library.includes(String(id));
+  const purchasedProductIds = useMemo(() => purchasedProducts.map((product) => product.id), [purchasedProducts]);
+  const cartTotal = cartItems.reduce((sum, product) => sum + (product.price || 0), 0);
+  const cartCount = cartItems.length;
+  const isInCart = (id) => cartItems.some((product) => product.id === String(id));
+  const isOwned = (id) => purchasedProductIds.includes(String(id));
 
   return (
     <AuthContext.Provider value={{
-      user, loading, cart, library, libraryproducts, orders, cartTotal, cartCount,
+      user, loading, cartItems, purchasedProductIds, purchasedProducts, orders, cartTotal, cartCount,
       login, register, logout, addToCart, removeFromCart,
-      clearCart, purchaseproducts, updateProfile, refreshCart,
-      refreshLibrary, refreshOrders, isInCart, isOwned
+      clearCart, checkout, updateProfile, refreshCart,
+      refreshPurchasedProducts, refreshOrders, isInCart, isOwned
     }}>
       {children}
     </AuthContext.Provider>

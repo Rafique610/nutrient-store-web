@@ -5,7 +5,7 @@ import Icon from '../components/ui/Icon';
 import './Auth.css';
 
 export default function Register() {
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '', role: 'customer' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
   const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ export default function Register() {
     if (form.password !== form.confirm) return setError('Passwords do not match.');
     if (form.password.length < 6) return setError('Password must be at least 6 characters.');
     setLoading(true);
-    const result = await register(form.name, form.email, form.password, form.role);
+    const result = await register(form.name, form.email, form.password);
     setLoading(false);
     if (result.success) navigate('/');
     else setError(result.error);
@@ -67,21 +67,6 @@ export default function Register() {
                 <Icon name="lock" className="auth-input-icon" size={16} />
                 <input type="password" value={form.confirm} onChange={set('confirm')} placeholder="Repeat password" required />
               </div>
-            </div>
-          </div>
-          <div className="auth-field">
-            <label>Account Type</label>
-            <div className="role-cards">
-              {[
-                { value: 'customer', label: 'Customer', desc: 'Browse and purchase sachets' },
-                { value: 'developer', label: 'Seller', desc: 'Publish and manage products' },
-              ].map(r => (
-                <label key={r.value} className={`role-card ${form.role === r.value ? 'active' : ''}`}>
-                  <input type="radio" name="role" value={r.value} checked={form.role === r.value} onChange={set('role')} />
-                  <span className="role-name">{r.label}</span>
-                  <span className="role-desc">{r.desc}</span>
-                </label>
-              ))}
             </div>
           </div>
           <button type="submit" className="btn btn-primary auth-submit" disabled={loading}>{loading ? 'Creating account...' : 'Create Account'}</button>

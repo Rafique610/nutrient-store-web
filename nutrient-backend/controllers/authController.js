@@ -41,7 +41,6 @@ export const formatUser = (user) => {
     joinDate: plain.createdAt,
     createdAt: plain.createdAt,
     updatedAt: plain.updatedAt,
-    studio: plain.role === "seller" ? fullName : undefined,
   };
 };
 
@@ -83,9 +82,7 @@ export const registerUser = async (req, res, next) => {
     }
 
     const userCount = await User.countDocuments();
-    let role = ["customer", "seller"].includes(req.body.role)
-      ? req.body.role
-      : "customer";
+    let role = "customer";
 
     if (req.body.role === "admin" && userCount === 0) {
       role = "admin";

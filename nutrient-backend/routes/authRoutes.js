@@ -22,8 +22,8 @@ const registerValidation = [
   body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
   body("role")
     .optional()
-    .isIn(["customer", "developer", "admin"])
-    .withMessage("Role must be customer, developer, or admin"),
+    .isIn(["customer", "admin"])
+    .withMessage("Role must be customer or admin"),
 ];
 
 const loginValidation = [

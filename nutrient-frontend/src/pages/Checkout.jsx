@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Icon from '../components/ui/Icon';
@@ -6,7 +6,7 @@ import { GENRE_COLORS } from '../data/mockData';
 import './Checkout.css';
 
 export default function Checkout() {
-  const { cart, cartTotal, purchaseproducts, user } = useAuth();
+  const { cartItems, cartTotal, checkout } = useAuth();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [payMethod, setPayMethod] = useState('card');
@@ -14,7 +14,7 @@ export default function Checkout() {
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
-  if (cart.length === 0 && step !== 3) {
+  if (cartItems.length === 0 && step !== 3) {
     return (
       <div className="checkout-page">
         <div className="checkout-empty">
@@ -29,7 +29,7 @@ export default function Checkout() {
     setError('');
     setProcessing(true);
     try {
-      await purchaseproducts(cart.map(g => g.id), payMethod);
+      await checkout(payMethod);
       setStep(3);
     } catch (err) {
       setError(err.message || 'Unable to complete checkout.');
@@ -117,7 +117,7 @@ export default function Checkout() {
             <h2>Order Summary</h2>
             {error && <div className="auth-error" style={{ marginBottom: 12 }}>{error}</div>}
             <div className="co-items">
-              {cart.map(g => {
+              {cartItems.map(g => {
                 const colors = GENRE_COLORS[g.genre] || ['#23c9b7','#0d9488'];
                 return (
                   <div key={g.id} className="co-item">

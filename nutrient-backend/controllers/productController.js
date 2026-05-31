@@ -1,4 +1,4 @@
-﻿import fs from "fs";
+import fs from "fs";
 import path from "path";
 import mongoose from "mongoose";
 import { validationResult } from "express-validator";
@@ -245,13 +245,6 @@ export const updateProduct = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
 
-    if (product.seller.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Only the owner seller can modify this product",
-      });
-    }
-
     const files = req.files || {};
     const coverFile = files.coverImage?.[0] || files.image?.[0];
     const productFile = files.productFile?.[0] || files.productFile?.[0];
@@ -301,13 +294,6 @@ export const deleteProduct = async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });
-    }
-
-    if (product.seller.toString() !== req.user._id.toString()) {
-      return res.status(403).json({
-        success: false,
-        message: "Only the owner seller can delete this product",
-      });
     }
 
     await Promise.all([

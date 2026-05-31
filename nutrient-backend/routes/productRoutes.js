@@ -1,4 +1,4 @@
-﻿import express from "express";
+import express from "express";
 import fs from "fs";
 import path from "path";
 import multer from "multer";
@@ -100,7 +100,7 @@ router.get("/:id", getProductById);
 router.post(
   "/",
   authMiddleware,
-  authorizeRoles("seller"),
+  authorizeRoles("admin"),
   uploadFields,
   createProductValidation,
   createProduct
@@ -108,12 +108,12 @@ router.post(
 router.put(
   "/:id",
   authMiddleware,
-  authorizeRoles("seller"),
+  authorizeRoles("admin"),
   uploadFields,
   updateProductValidation,
   updateProduct
 );
-router.delete("/:id", authMiddleware, authorizeRoles("seller"), deleteProduct);
+router.delete("/:id", authMiddleware, authorizeRoles("admin"), deleteProduct);
 
 export default router;
 

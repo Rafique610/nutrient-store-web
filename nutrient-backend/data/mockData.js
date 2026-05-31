@@ -1,4 +1,4 @@
-﻿export const GENRE_COLORS = {
+export const GENRE_COLORS = {
   Immunity: ['#2f8f5b', '#8bbf4d'],
   Vitamins: ['#1b7f8c', '#7ac6b8'],
   Minerals: ['#8a6f34', '#d7a63f'],
@@ -223,7 +223,6 @@ export const mockproducts = supplementCatalog.map(product => ({
 
 export const mockUsers = [
   { id: 1, name: 'Ayesha Khan', email: 'customer@nutrifactor.local', role: 'customer', avatar: null, joinDate: '2025-01-15', purchases: [1, 3, 6], cart: [] },
-  { id: 2, name: 'NutriFactor Team', email: 'seller@nutrifactor.local', role: 'seller', avatar: null, joinDate: '2024-11-08', studio: 'NutriFactor Wellness Lab' },
   { id: 3, name: 'Admin User', email: 'admin@nutrifactor.local', role: 'admin', avatar: null, joinDate: '2024-01-01' },
 ];
 

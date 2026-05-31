@@ -51,7 +51,6 @@ export default function Navbar() {
   };
 
   const isAdmin = user?.role === 'admin';
-  const isDeveloper = user?.role === 'developer';
 
   return (
     <nav className="navbar">
@@ -74,7 +73,6 @@ export default function Navbar() {
             <Link to="/store" className={`nav-link ${location.pathname === '/store' ? 'active' : ''}`}>Store</Link>
             <Link to="/store?filter=new" className="nav-link">New</Link>
             <Link to="/store?filter=top" className="nav-link">Best Sellers</Link>
-            {isDeveloper && <Link to="/developer" className="nav-link">Seller Hub</Link>}
           </div>
         )}
 
@@ -152,7 +150,6 @@ export default function Navbar() {
                   </div>
                   <div className="dropdown-divider" />
                   {isAdmin && <Link to="/admin" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>Admin Dashboard</Link>}
-                  {isDeveloper && <Link to="/developer" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>Seller Hub</Link>}
                   {!isAdmin && <Link to="/library" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>My Orders</Link>}
                   {!isAdmin && <Link to="/profile" className="dropdown-item" onClick={() => setUserMenuOpen(false)}>Profile</Link>}
                   <div className="dropdown-divider" />

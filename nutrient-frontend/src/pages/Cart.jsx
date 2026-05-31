@@ -1,14 +1,14 @@
-﻿import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Icon from '../components/ui/Icon';
 import { GENRE_COLORS } from '../data/mockData';
 import './Cart.css';
 
 export default function Cart() {
-  const { cart, removeFromCart, cartTotal } = useAuth();
+  const { cartItems, removeFromCart, cartTotal } = useAuth();
   const navigate = useNavigate();
 
-  if (cart.length === 0) {
+  if (cartItems.length === 0) {
     return (
       <div className="cart-page">
         <h1 className="cart-title">Shopping Cart</h1>
@@ -24,11 +24,11 @@ export default function Cart() {
 
   return (
     <div className="cart-page">
-      <h1 className="cart-title">Shopping Cart <span className="cart-count">({cart.length})</span></h1>
+      <h1 className="cart-title">Shopping Cart <span className="cart-count">({cartItems.length})</span></h1>
 
       <div className="cart-layout">
         <div className="cart-items">
-          {cart.map(product => {
+          {cartItems.map(product => {
             const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
             return (
               <div key={product.id} className="cart-item panel">
@@ -66,7 +66,7 @@ export default function Cart() {
         <div className="cart-summary panel">
           <h2>Order Summary</h2>
           <div className="summary-lines">
-            {cart.map(g => (
+            {cartItems.map(g => (
               <div key={g.id} className="summary-line">
                 <span className="summary-product-name">{g.title}</span>
                 <span>{g.price === 0 ? 'SAMPLE' : `$${g.price.toFixed(2)}`}</span>

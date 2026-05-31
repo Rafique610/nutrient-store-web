@@ -15,7 +15,6 @@ export default function Sidebar({ open, setSidebarOpen }) {
   const location = useLocation();
   const { user } = useAuth();
   const isAdmin = user?.role === 'admin';
-  const isDev = user?.role === 'developer';
 
   const closeIfMobile = () => {
     if (!setSidebarOpen) return;
@@ -75,7 +74,6 @@ export default function Sidebar({ open, setSidebarOpen }) {
           <div className="sidebar-heading">MY ACCOUNT</div>
           <NavItem to="/library" icon="library_books" label="My Orders" />
           <NavItem to="/cart" icon="shopping_cart" label="Cart" />
-          {isDev && <NavItem to="/developer" icon="inventory_2" label="Seller Hub" />}
         </div>
       )}
 
