@@ -52,6 +52,10 @@ Add the following fields:
 - `inStock`: boolean
   - Admin-controlled manual flag.
   - Storefront add-to-cart should be blocked if `inStock === false` (exact UX handled in implementation).
+- `lowStockThreshold`: number (integer, min 0)
+  - Default: 5
+  - Used by admin dashboard to decide if an item should be flagged as low stock.
+  - Phase 1 assumes a global default (5) and stores it per product to avoid future ambiguity; can be made configurable later.
 - `compareAtPrice`: optional number (min 0)
   - If present and greater than `price`, storefront renders a sale:
     - discounted price = `price`
@@ -92,12 +96,15 @@ Add timeline:
   - `message`: string (human readable)
   - `meta`: object (optional)
   - `createdAt`: timestamp
-  - `by`: user id (admin) when relevant
+- `actor`: object (optional, when relevant)
+  - `id`: user id (admin)
+  - `name`: string (denormalized, stored for display without extra lookups)
 
 Timeline requirements:
 
 - Append an `Order Created` event on creation.
 - Append an event whenever fulfillment status changes, e.g. `Status → Processing`.
+- Append an event for each admin note added.
 
 ## Backend API Changes (Admin)
 
@@ -116,9 +123,10 @@ Timeline requirements:
 ### Products (extend existing)
 
 - `PUT /api/admin/products/:id`
-  - Accept new fields: `status`, `stock`, `inStock`, `compareAtPrice`
+  - Accept new fields: `status`, `stock`, `inStock`, `lowStockThreshold`, `compareAtPrice`
   - Validation rules:
     - `stock` must be integer >= 0
+    - `lowStockThreshold` must be integer >= 0
     - `compareAtPrice` >= 0
     - If `compareAtPrice` exists, it should be >= `price` (storefront expects compare-at to represent original price)
 
@@ -136,6 +144,7 @@ Timeline requirements:
   - Behavior (as specified):
     - For each eligible product:
       - If `compareAtPrice` is empty: set `compareAtPrice = current price`
+      - Always treat `compareAtPrice` as the original source price (prevents “sale-on-sale” compounding)
       - Set `price = round2(compareAtPrice * (1 - percent/100))`
 - `POST /api/admin/products/bulk-sale/remove`
   - Requires explicit UI confirmation prior to calling.
@@ -167,12 +176,18 @@ Safety and consistency:
 
 ### Dashboard
 
-- KPI cards: Total Revenue, Total Orders, Total Customers, Low Stock (count)
+- Primary ops KPIs (visually prioritized):
+  - Pending Orders (count of orders with `fulfillmentStatus` in `new|processing`)
+  - Low Stock (count of products where `inStock === true` and `stock <= lowStockThreshold`)
+  - Recent Orders (list)
+- Secondary analytics KPIs:
+  - Total Revenue, Total Orders, Total Customers
 - Recent Orders:
   - Displays: created time, customer, total, fulfillmentStatus, paymentStatus
   - Quick action: change fulfillment status
 - Low Stock:
   - Displays top N products sorted by stock ascending where `inStock === true`
+  - Low stock definition: `stock <= lowStockThreshold`
 
 ### Products Page
 
@@ -205,6 +220,10 @@ Detail:
 - Items list
 - Status control
 - Timeline stream (reverse chronological) with status change events
+- Customer notes field (stored on the order and shown to admin)
+  - Examples: call before delivery, leave with receptionist, deliver after 5 PM
+- Admin internal notes:
+  - Add note action appends to the timeline as `type: "note"` with actor
 
 ## Validation & Error Handling
 
