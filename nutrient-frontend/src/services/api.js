@@ -88,6 +88,10 @@ export function normalizeProduct(product) {
   const reviews = Number(product.reviews ?? product.totalReviews ?? 0);
   const downloads = Number(product.downloads ?? product.totalSales ?? 0);
   const price = Number(product.price || 0);
+  const compareAtPrice = product.compareAtPrice === null || product.compareAtPrice === undefined || product.compareAtPrice === ''
+    ? null
+    : Number(product.compareAtPrice);
+  const status = (product.status || '').toLowerCase() === 'published' ? 'active' : (product.status || 'active');
 
   return {
     ...product,
@@ -102,6 +106,11 @@ export function normalizeProduct(product) {
     developerName: product.brandName || product.developer || product.developerName || 'HydraDose Labs',
     developerId: product.seller || product.developerId,
     price,
+    compareAtPrice,
+    status,
+    inStock: typeof product.inStock === 'boolean' ? product.inStock : true,
+    stock: Number(product.stock ?? 0),
+    lowStockThreshold: Number(product.lowStockThreshold ?? 5),
     rating,
     averageRating: rating,
     reviews,
@@ -150,6 +159,29 @@ export function normalizeReview(review) {
     text: review.text || review.comment || '',
     comment: review.comment || review.text || '',
     date: review.date || (review.createdAt ? review.createdAt.slice(0, 10) : ''),
+  };
+}
+
+export function normalizeAdminOrder(order) {
+  if (!order) return null;
+  const id = String(order.id || order._id);
+  const user = order.user && typeof order.user === 'object'
+    ? {
+        id: String(order.user.id || order.user._id),
+        name: order.user.name || order.user.profile?.fullName || order.user.username || '',
+        email: order.user.email || '',
+      }
+    : order.user;
+
+  return {
+    ...order,
+    id,
+    _id: id,
+    user,
+    totalAmount: Number(order.totalAmount ?? 0),
+    fulfillmentStatus: order.fulfillmentStatus || 'new',
+    paymentStatus: order.paymentStatus || 'completed',
+    timeline: Array.isArray(order.timeline) ? order.timeline : [],
   };
 }
 
@@ -280,4 +312,20 @@ export const adminApi = {
     product: normalizeProduct(data?.product),
   })),
   deleteproduct: (id) => request(`/admin/products/${id}`, { method: 'DELETE' }),
+  orders: (params = {}) => request(`/admin/orders${buildQuery(params)}`).then((data) => ({
+    ...data,
+    orders: (data?.orders || []).map(normalizeAdminOrder),
+  })),
+  order: (id) => request(`/admin/orders/${id}`).then((data) => ({
+    order: normalizeAdminOrder(data?.order),
+  })),
+  updateOrderStatus: (id, fulfillmentStatus) => request(`/admin/orders/${id}/fulfillment-status`, { method: 'PATCH', body: { fulfillmentStatus } }).then((data) => ({
+    order: normalizeAdminOrder(data?.order),
+  })),
+  addOrderNote: (id, message) => request(`/admin/orders/${id}/notes`, { method: 'POST', body: { message } }).then((data) => ({
+    order: normalizeAdminOrder(data?.order),
+  })),
+  bulkSalePreview: (percent) => request('/admin/products/bulk-sale/preview', { method: 'POST', body: { percent } }),
+  bulkSaleApply: (percent) => request('/admin/products/bulk-sale/apply', { method: 'POST', body: { percent } }),
+  bulkSaleRemove: () => request('/admin/products/bulk-sale/remove', { method: 'POST', body: {} }),
 };

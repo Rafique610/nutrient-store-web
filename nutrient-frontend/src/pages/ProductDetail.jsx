@@ -93,12 +93,14 @@ export default function ProductDetail() {
   const colors = GENRE_COLORS[product.genre] || ['#23c9b7','#0d9488'];
   const owned = isOwned(product.id);
   const inCart = isInCart(product.id);
+  const onSale = product.compareAtPrice && product.compareAtPrice > product.price;
+  const discount = onSale ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100) : 0;
   const avgRating = localReviews.length > 0
     ? (localReviews.reduce((s, r) => s + r.rating, 0) / localReviews.length).toFixed(1)
     : product.rating.toFixed(1);
   const reviewCount = localReviews.length || product.reviews;
 
-  const handleAddToCart = async () => { if (user) await addToCart(product); };
+  const handleAddToCart = async () => { if (user && product.inStock !== false) await addToCart(product); };
 
   const handleDownload = async () => {
     setActionError('');
@@ -224,7 +226,15 @@ export default function ProductDetail() {
             <div className="gd-price-display">
               {product.price === 0
                 ? <span className="price-free-lg">SAMPLE</span>
-                : <span className="gd-price">${product.price.toFixed(2)}</span>
+                : onSale ? (
+                  <div className="gd-price-sale">
+                    <span className="gd-price">${product.price.toFixed(2)}</span>
+                    <div className="gd-price-compare-row">
+                      <span className="gd-price-compare">${product.compareAtPrice.toFixed(2)}</span>
+                      <span className="gd-price-discount">{discount}% OFF</span>
+                    </div>
+                  </div>
+                ) : <span className="gd-price">${product.price.toFixed(2)}</span>
               }
             </div>
             
@@ -233,6 +243,10 @@ export default function ProductDetail() {
                 <Link to="/cart" className="btn btn-primary w-full" style={{ justifyContent: 'center' }}>
                   <Icon name="shopping_cart" size={18} /> View in Cart
                 </Link>
+              ) : product.inStock === false ? (
+                <button className="btn btn-secondary w-full" disabled style={{ justifyContent: 'center' }}>
+                  Out of stock
+                </button>
               ) : product.price === 0 ? (
                 <button className="btn btn-success w-full" onClick={handleAddToCart} disabled={!user}>
                   <Icon name="shopping_bag" size={18} /> Get Sample

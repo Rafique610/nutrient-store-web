@@ -12,5 +12,7 @@ package-lock.json
 **/.vscode/
 .DS_Store
 **/.DS_Store
+.superpowers/
+**/.superpowers/
 Nutrient-Presentation-Demo.mp4
 ~$Nutrient_Slides.pptx

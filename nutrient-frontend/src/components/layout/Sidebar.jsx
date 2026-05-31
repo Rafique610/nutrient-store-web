@@ -47,12 +47,13 @@ export default function Sidebar({ open, setSidebarOpen }) {
         <div className="sidebar-section">
           <div className="sidebar-heading">OVERVIEW</div>
           <NavItem to="/admin" icon="pie_chart" label="Dashboard" />
+          <NavItem to="/admin/orders" icon="receipt_long" label="Orders" />
           <NavItem to="/admin/users" icon="group" label="Users" />
           <NavItem to="/admin/products" icon="apps" label="All Products" />
         </div>
         <div className="sidebar-section">
           <div className="sidebar-heading">MANAGEMENT</div>
-          <NavItem to="/admin" icon="bar_chart" label="Analytics" />
+          <NavItem to="/admin/products" icon="inventory_2" label="Catalog" />
         </div>
       </aside>
     );

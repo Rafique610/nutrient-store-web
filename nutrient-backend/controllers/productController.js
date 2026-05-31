@@ -46,6 +46,14 @@ const parseList = (value) => {
 
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
+const normalizeStatus = (value) => {
+  if (!value) return null;
+  const status = String(value).trim().toLowerCase();
+  if (status === "published") return "active";
+  if (status === "active" || status === "draft") return status;
+  return null;
+};
+
 export const formatProduct = (product) => {
   const plain = product.toObject ? product.toObject({ virtuals: true }) : product;
   const id = plain._id?.toString() || plain.id;
@@ -66,6 +74,7 @@ export const formatProduct = (product) => {
     developer: brandName,
     developerId: sellerObject?._id?.toString() || plain.seller?.toString(),
     price: Number(plain.price || 0),
+    compareAtPrice: typeof plain.compareAtPrice === "number" ? Number(plain.compareAtPrice) : null,
     category: plain.category,
     genre: plain.category,
     coverImage: plain.coverImage || "",
@@ -78,7 +87,10 @@ export const formatProduct = (product) => {
     reviews: Number(plain.totalReviews || 0),
     totalSales: Number(plain.totalSales || 0),
     downloads: Number(plain.totalSales || 0),
-    status: plain.status,
+    status: normalizeStatus(plain.status) || plain.status,
+    inStock: typeof plain.inStock === "boolean" ? plain.inStock : true,
+    stock: typeof plain.stock === "number" ? Number(plain.stock) : 0,
+    lowStockThreshold: typeof plain.lowStockThreshold === "number" ? Number(plain.lowStockThreshold) : 5,
     tags: plain.tags || [],
     isFeatured: Boolean(plain.isFeatured),
     isFree: Number(plain.price || 0) === 0,
@@ -101,10 +113,13 @@ export const getProducts = async (req, res, next) => {
     const search = req.query.search || req.query.q;
     const category = req.query.category || req.query.genre;
 
-    if (req.query.status && ["draft", "published"].includes(req.query.status)) {
-      query.status = req.query.status;
-    } else {
+    const requestedStatus = normalizeStatus(req.query.status);
+    if (requestedStatus) {
+      query.status = requestedStatus;
+    } else if (req.query.status === "published") {
       query.status = "published";
+    } else {
+      query.status = { $in: ["active", "published"] };
     }
 
     if (category) {
@@ -174,6 +189,10 @@ export const getProductById = async (req, res, next) => {
       return res.status(404).json({ success: false, message: "Product not found" });
     }
 
+    if (!["active", "published"].includes(product.status)) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
     return res.status(200).json({
       success: true,
       data: {
@@ -198,6 +217,7 @@ export const createProduct = async (req, res, next) => {
     const screenshotFiles = files.screenshots || [];
     const category = req.body.category || req.body.genre;
     const brandName = req.user.profile?.fullName || req.user.username;
+    const status = normalizeStatus(req.body.status) || (req.body.status === "published" ? "published" : "active");
 
     const product = await Product.create({
       title: req.body.title,
@@ -205,6 +225,7 @@ export const createProduct = async (req, res, next) => {
       seller: req.user._id,
       brandName,
       price: Number(req.body.price),
+      compareAtPrice: typeof req.body.compareAtPrice === "undefined" || req.body.compareAtPrice === "" ? null : Number(req.body.compareAtPrice),
       category,
       coverImage: coverFile ? publicUploadPath(coverFile) : req.body.coverImage || req.body.image || "",
       screenshots: [
@@ -212,7 +233,10 @@ export const createProduct = async (req, res, next) => {
         ...screenshotFiles.map(publicUploadPath),
       ],
       productFile: productFile ? storedUploadPath(productFile) : req.body.productFile || req.body.productFile || "",
-      status: req.body.status || "published",
+      status,
+      inStock: typeof req.body.inStock === "undefined" ? true : req.body.inStock === "true" || req.body.inStock === true,
+      stock: typeof req.body.stock === "undefined" || req.body.stock === "" ? 0 : Number(req.body.stock),
+      lowStockThreshold: typeof req.body.lowStockThreshold === "undefined" || req.body.lowStockThreshold === "" ? 5 : Number(req.body.lowStockThreshold),
       tags: parseList(req.body.tags),
       isFeatured: req.body.isFeatured === "true" || req.body.isFeatured === true,
       releaseDate: req.body.releaseDate || new Date(),
@@ -250,7 +274,7 @@ export const updateProduct = async (req, res, next) => {
     const productFile = files.productFile?.[0] || files.productFile?.[0];
     const screenshotFiles = files.screenshots || [];
 
-    const allowedFields = ["title", "description", "status", "releaseDate"];
+    const allowedFields = ["title", "description", "releaseDate"];
     allowedFields.forEach((field) => {
       if (typeof req.body[field] !== "undefined") {
         product[field] = req.body[field];
@@ -258,10 +282,28 @@ export const updateProduct = async (req, res, next) => {
     });
 
     if (typeof req.body.price !== "undefined") product.price = Number(req.body.price);
+    if (typeof req.body.compareAtPrice !== "undefined") {
+      product.compareAtPrice = req.body.compareAtPrice === "" || req.body.compareAtPrice === null
+        ? null
+        : Number(req.body.compareAtPrice);
+    }
+    if (typeof req.body.status !== "undefined") {
+      const status = normalizeStatus(req.body.status) || (req.body.status === "published" ? "published" : null);
+      if (status) product.status = status;
+    }
     if (req.body.category || req.body.genre) product.category = req.body.category || req.body.genre;
     if (typeof req.body.tags !== "undefined") product.tags = parseList(req.body.tags);
     if (typeof req.body.isFeatured !== "undefined") {
       product.isFeatured = req.body.isFeatured === "true" || req.body.isFeatured === true;
+    }
+    if (typeof req.body.inStock !== "undefined") {
+      product.inStock = req.body.inStock === "true" || req.body.inStock === true;
+    }
+    if (typeof req.body.stock !== "undefined") {
+      product.stock = req.body.stock === "" ? 0 : Number(req.body.stock);
+    }
+    if (typeof req.body.lowStockThreshold !== "undefined") {
+      product.lowStockThreshold = req.body.lowStockThreshold === "" ? 5 : Number(req.body.lowStockThreshold);
     }
     if (coverFile) product.coverImage = publicUploadPath(coverFile);
     if (productFile) product.productFile = storedUploadPath(productFile);

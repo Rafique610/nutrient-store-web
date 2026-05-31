@@ -213,8 +213,8 @@ export function AuthProvider({ children }) {
     applyCart([]);
   };
 
-  const checkout = async (paymentMethod = 'mock') => {
-    const data = await orderApi.checkout({ paymentMethod });
+  const checkout = async (paymentMethod = 'mock', details = {}) => {
+    const data = await orderApi.checkout({ paymentMethod, ...details });
     applyCart([]);
     applyPurchasedProducts(data.library || []);
     await refreshOrders();

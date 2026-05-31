@@ -8,6 +8,8 @@ const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
 const getProductIdFromBody = (body) => body.productId || body.productId || body.id || body.product?._id || body.product?.id;
 
+const purchasableStatusQuery = { $in: ["active", "published"] };
+
 const formatOrder = (order) => {
   const plain = order.toObject ? order.toObject() : order;
   return {
@@ -22,6 +24,10 @@ const formatOrder = (order) => {
     totalAmount: plain.totalAmount,
     paymentStatus: plain.paymentStatus,
     paymentMethod: plain.paymentMethod,
+    fulfillmentStatus: plain.fulfillmentStatus,
+    shippingAddress: plain.shippingAddress || null,
+    customerNotes: plain.customerNotes || "",
+    timeline: plain.timeline || [],
     createdAt: plain.createdAt,
     updatedAt: plain.updatedAt,
   };
@@ -60,12 +66,16 @@ export const addToCart = async (req, res, next) => {
     }
 
     const [product, user] = await Promise.all([
-      Product.findOne({ _id: productId, status: "published" }),
+      Product.findOne({ _id: productId, status: purchasableStatusQuery }),
       User.findById(req.user._id),
     ]);
 
     if (!product) {
       return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    if (product.inStock === false) {
+      return res.status(400).json({ success: false, message: "Product is out of stock" });
     }
 
     if (user.cart.some((cartId) => cartId.toString() === productId)) {
@@ -149,6 +159,20 @@ export const checkout = async (req, res, next) => {
     if (!user.cart.length) {
       return res.status(400).json({ success: false, message: "Cart is empty" });
     }
+    const invalidProducts = user.cart.filter((product) => {
+      if (!product) return true;
+      if (!["active", "published"].includes(product.status)) return true;
+      if (product.inStock === false) return true;
+      return false;
+    });
+
+    if (invalidProducts.length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Some items in your cart are not available. Please remove them and try again.",
+      });
+    }
+
     const purchasableProducts = user.cart;
 
     const orderProducts = purchasableProducts.map((product) => ({
@@ -158,12 +182,47 @@ export const checkout = async (req, res, next) => {
     }));
     const totalAmount = orderProducts.reduce((sum, item) => sum + item.price, 0);
 
+    const shippingAddress = req.body.shippingAddress || {};
+    const requiredAddressFields = ["fullName", "phone", "addressLine1", "city"];
+    const missingAddressField = requiredAddressFields.find((field) => {
+      const value = shippingAddress[field];
+      return !value || String(value).trim().length === 0;
+    });
+
+    if (missingAddressField) {
+      return res.status(400).json({
+        success: false,
+        message: `Shipping address ${missingAddressField} is required`,
+      });
+    }
+
+    const actorName = req.user.profile?.fullName || req.user.username || "User";
+
     const order = await Order.create({
       user: user._id,
       products: orderProducts,
       totalAmount,
       paymentStatus: "completed",
       paymentMethod: req.body.paymentMethod || "mock",
+      fulfillmentStatus: "new",
+      shippingAddress: {
+        fullName: String(shippingAddress.fullName || "").trim(),
+        phone: String(shippingAddress.phone || "").trim(),
+        addressLine1: String(shippingAddress.addressLine1 || "").trim(),
+        addressLine2: String(shippingAddress.addressLine2 || "").trim(),
+        city: String(shippingAddress.city || "").trim(),
+        state: String(shippingAddress.state || "").trim(),
+        postalCode: String(shippingAddress.postalCode || "").trim(),
+        country: String(shippingAddress.country || "").trim(),
+      },
+      customerNotes: typeof req.body.customerNotes === "string" ? req.body.customerNotes.trim() : "",
+      timeline: [
+        {
+          type: "created",
+          message: "Order Created",
+          actor: { id: req.user._id, name: actorName },
+        },
+      ],
     });
 
     const nextPurchasedIds = new Set([

@@ -21,11 +21,14 @@ export default function ProductCard({ product, rank }) {
   const [adding, setAdding] = useState(false);
   const colors = GENRE_COLORS[product.genre] || ['#23c9b7', '#0d9488'];
   const inCart = isInCart(product.id);
+  const onSale = product.compareAtPrice && product.compareAtPrice > product.price;
+  const discount = onSale ? Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100) : 0;
 
   const handleCart = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (!user || adding) return;
+    if (product.inStock === false) return;
     setAdding(true);
     await addToCart(product);
     setAdding(false);
@@ -51,6 +54,8 @@ export default function ProductCard({ product, rank }) {
             {rank && <span className="card-rank">#{rank}</span>}
             {product.isNew && !rank && <span className="card-badge badge-new">NEW</span>}
             {product.isFree && <span className="card-badge badge-free">SAMPLE</span>}
+            {product.inStock === false && <span className="card-badge badge-out">OUT</span>}
+            {onSale && <span className="card-badge badge-sale">{discount}% OFF</span>}
           </div>
 
           {/* Hover overlay */}
@@ -71,6 +76,11 @@ export default function ProductCard({ product, rank }) {
           <div className="product-card-price">
             {product.price === 0 ? (
               <span className="price-free">SAMPLE</span>
+            ) : onSale ? (
+              <div className="price-sale">
+                <span className="price-value">${product.price.toFixed(2)}</span>
+                <span className="price-compare">${product.compareAtPrice.toFixed(2)}</span>
+              </div>
             ) : (
               <span className="price-value">${product.price.toFixed(2)}</span>
             )}
@@ -79,6 +89,10 @@ export default function ProductCard({ product, rank }) {
             {inCart ? (
               <button className="btn-cart btn-cart-in-cart" disabled>
                 <Icon name="check" size={14} /> In Cart
+              </button>
+            ) : product.inStock === false ? (
+              <button className="btn-cart btn-cart-in-cart" disabled>
+                Out of stock
               </button>
             ) : product.price === 0 ? (
               <Link to={`/product/${product.id}`} className="btn-cart btn-cart-free">

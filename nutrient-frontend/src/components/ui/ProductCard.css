@@ -85,6 +85,8 @@
 .badge-new { background: rgba(35,201,183,0.92); color: #02110f; }
 .badge-free { background: rgba(76, 175, 118, 0.9); color: #051a0c; }
 .badge-owned { background: rgba(76, 175, 118, 0.9); color: #051a0c; }
+.badge-out { background: rgba(224,85,85,0.88); color: #1a0505; }
+.badge-sale { background: rgba(34,211,238,0.88); color: #031216; }
 
 .card-hover-overlay {
   position: absolute;
@@ -175,6 +177,18 @@
   font-size: 15px;
   font-weight: 700;
   color: var(--text-bright);
+}
+
+.price-sale {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.price-compare {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-decoration: line-through;
 }
 
 .product-card-actions {

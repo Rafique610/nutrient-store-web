@@ -79,8 +79,8 @@ const createProductValidation = [
   }),
   body("status")
     .optional()
-    .isIn(["draft", "published"])
-    .withMessage("Status must be draft or published"),
+    .isIn(["draft", "active", "published"])
+    .withMessage("Status must be draft or active"),
 ];
 
 const updateProductValidation = [
@@ -89,8 +89,8 @@ const updateProductValidation = [
   body("price").optional().isFloat({ min: 0 }).withMessage("Price must be a non-negative number"),
   body("status")
     .optional()
-    .isIn(["draft", "published"])
-    .withMessage("Status must be draft or published"),
+    .isIn(["draft", "active", "published"])
+    .withMessage("Status must be draft or active"),
 ];
 
 router.get("/", getProducts);

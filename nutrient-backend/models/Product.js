@@ -30,6 +30,11 @@ const productSchema = new mongoose.Schema(
       min: [0, "Price cannot be negative"],
       default: 0,
     },
+    compareAtPrice: {
+      type: Number,
+      min: [0, "Compare-at price cannot be negative"],
+      default: null,
+    },
     category: {
       type: String,
       required: [true, "Product category is required"],
@@ -64,10 +69,24 @@ const productSchema = new mongoose.Schema(
       min: 0,
       default: 0,
     },
+    inStock: {
+      type: Boolean,
+      default: true,
+    },
+    stock: {
+      type: Number,
+      min: [0, "Stock cannot be negative"],
+      default: 0,
+    },
+    lowStockThreshold: {
+      type: Number,
+      min: [0, "Low stock threshold cannot be negative"],
+      default: 5,
+    },
     status: {
       type: String,
-      enum: ["draft", "published"],
-      default: "published",
+      enum: ["draft", "active", "published"],
+      default: "active",
     },
     tags: {
       type: [String],

@@ -69,7 +69,7 @@ const seed = async () => {
       averageRating: product.rating,
       totalReviews: product.reviews,
       totalSales: product.downloads,
-      status: "published",
+      status: "active",
       tags: product.tags,
       isFeatured: product.isFeatured,
       releaseDate: product.releaseDate,

@@ -396,6 +396,32 @@
   color: var(--text-bright);
 }
 
+.gd-price-sale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.gd-price-compare-row {
+  display: inline-flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.gd-price-compare {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+}
+
+.gd-price-discount {
+  font-size: 0.95rem;
+  color: var(--accent-2);
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
 .gd-actions { display: flex; flex-direction: column; gap: 8px; }
 
 .w-full { width: 100%; justify-content: center; }

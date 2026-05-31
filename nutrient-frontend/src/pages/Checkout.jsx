@@ -11,6 +11,17 @@ export default function Checkout() {
   const [step, setStep] = useState(1);
   const [payMethod, setPayMethod] = useState('card');
   const [cardNum, setCardNum] = useState('');
+  const [shippingAddress, setShippingAddress] = useState({
+    fullName: '',
+    phone: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: '',
+  });
+  const [customerNotes, setCustomerNotes] = useState('');
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState('');
 
@@ -29,7 +40,15 @@ export default function Checkout() {
     setError('');
     setProcessing(true);
     try {
-      await checkout(payMethod);
+      const required = ['fullName', 'phone', 'addressLine1', 'city'];
+      const missing = required.find((key) => !String(shippingAddress[key] || '').trim());
+      if (missing) {
+        setProcessing(false);
+        setError(`Shipping address ${missing} is required.`);
+        return;
+      }
+
+      await checkout(payMethod, { shippingAddress, customerNotes });
       setStep(3);
     } catch (err) {
       setError(err.message || 'Unable to complete checkout.');
@@ -64,6 +83,49 @@ export default function Checkout() {
       <div className="checkout-layout">
         {/* Form */}
         <div className="checkout-form-area">
+          <div className="checkout-section panel">
+            <h2 className="section-heading"><Icon name="local_shipping" size={20} /> Shipping</h2>
+            <div className="form-group">
+              <label className="form-label">Full Name *</label>
+              <input className="form-control" value={shippingAddress.fullName} onChange={(e) => setShippingAddress((p) => ({ ...p, fullName: e.target.value }))} />
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Phone *</label>
+                <input className="form-control" value={shippingAddress.phone} onChange={(e) => setShippingAddress((p) => ({ ...p, phone: e.target.value }))} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">City *</label>
+                <input className="form-control" value={shippingAddress.city} onChange={(e) => setShippingAddress((p) => ({ ...p, city: e.target.value }))} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Address Line 1 *</label>
+              <input className="form-control" value={shippingAddress.addressLine1} onChange={(e) => setShippingAddress((p) => ({ ...p, addressLine1: e.target.value }))} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Address Line 2</label>
+              <input className="form-control" value={shippingAddress.addressLine2} onChange={(e) => setShippingAddress((p) => ({ ...p, addressLine2: e.target.value }))} />
+            </div>
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">State</label>
+                <input className="form-control" value={shippingAddress.state} onChange={(e) => setShippingAddress((p) => ({ ...p, state: e.target.value }))} />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Postal Code</label>
+                <input className="form-control" value={shippingAddress.postalCode} onChange={(e) => setShippingAddress((p) => ({ ...p, postalCode: e.target.value }))} />
+              </div>
+            </div>
+            <div className="form-group">
+              <label className="form-label">Country</label>
+              <input className="form-control" value={shippingAddress.country} onChange={(e) => setShippingAddress((p) => ({ ...p, country: e.target.value }))} />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Customer Notes</label>
+              <textarea className="form-control" rows={3} value={customerNotes} onChange={(e) => setCustomerNotes(e.target.value)} placeholder="Call before delivery, deliver after 5 PM, etc." />
+            </div>
+          </div>
           <div className="checkout-section panel">
             <h2 className="section-heading"><Icon name="credit_card" size={20} /> Payment Method</h2>
             <div className="pay-methods">
